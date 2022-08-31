@@ -9,13 +9,3 @@
 
 # MAGIC %md
 # MAGIC **Your Answers**
-
-# COMMAND ----------
-
-# You have a variable my_var="Hello". Print "Hello World" with use of that variable.
-# ANSWER: print(f'{my_var} World!')
-
-# COMMAND ----------
-
-# You have a query SELECT * FROM table. Use python to run this query.
-# ANSWER: spark.sql(f"SELECT * FROM table")
