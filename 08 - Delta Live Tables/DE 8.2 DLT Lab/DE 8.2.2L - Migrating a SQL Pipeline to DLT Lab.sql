@@ -34,9 +34,9 @@
 -- COMMAND ----------
 
 -- TODO
-CREATE OR REFRESH STREAMING LIVE TABLE recordings_bronze
-AS SELECT current_timestamp() receipt_time, input_file_name() source_file, *
-  FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE"))
+CREATE <FILL-IN>
+AS SELECT <FILL-IN>
+  FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn INTEGER"))
 
 -- COMMAND ----------
 
@@ -59,9 +59,9 @@ AS SELECT current_timestamp() receipt_time, input_file_name() source_file, *
 -- COMMAND ----------
 
 -- TODO
-CREATE OR REFRESH STREAMING LIVE TABLE pii
+CREATE <FILL-IN> pii
 AS SELECT *
-  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map("header", "true", "cloudFiles.inferColumnTypes", "true"))
+  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map(<FILL-IN>))
 
 -- COMMAND ----------
 
@@ -88,16 +88,14 @@ AS SELECT *
 
 -- TODO
 CREATE OR REFRESH STREAMING LIVE TABLE recordings_enriched
-  (CONSTRAINT positive_heartrate EXPECT (heartrate > 0) ON VIOLATION DROP ROW)
+  (<FILL-IN add a constraint to drop records when heartrate ! > 0>)
 AS SELECT 
-  CAST(a.device_id AS INTEGER) device_id, 
-  CAST(a.mrn AS LONG) mrn, 
-  CAST(a.heartrate AS DOUBLE) heartrate, 
-  CAST(from_unixtime(a.time, 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time,
-  b.name
-  FROM STREAM(live.recordings_bronze) a
-  INNER JOIN STREAM(live.pii) b
-  ON a.mrn = b.mrn
+  CAST(<FILL-IN>) device_id, 
+  <FILL-IN mrn>, 
+  <FILL-IN heartrate>, 
+  CAST(FROM_UNIXTIME(DOUBLE(time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time 
+  FROM STREAM(live.recordings_bronze)
+  <FILL-IN specify source and perform inner join with pii on mrn>
 
 -- COMMAND ----------
 
@@ -118,11 +116,9 @@ AS SELECT
 -- COMMAND ----------
 
 -- TODO
-CREATE OR REFRESH STREAMING LIVE TABLE daily_patient_avg
-  COMMENT "Daily mean heartrates by patient"
-AS SELECT mrn, name, MEAN(heartrate) avg_heartrate, DATE(time) `date`
-  FROM STREAM(live.recordings_enriched)
-  GROUP BY mrn, name, DATE(time)
+CREATE <FILL-IN> daily_patient_avg
+  COMMENT <FILL-IN insert comment here>
+AS SELECT <FILL-IN>
 
 -- COMMAND ----------
 
