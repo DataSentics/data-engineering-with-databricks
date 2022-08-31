@@ -74,6 +74,12 @@ RETURN concat(upper(text), "!!!")
 
 -- COMMAND ----------
 
+CREATE OR REPLACE FUNCTION add_integer(number INT)
+RETURNS INT
+RETURN number + 5
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
