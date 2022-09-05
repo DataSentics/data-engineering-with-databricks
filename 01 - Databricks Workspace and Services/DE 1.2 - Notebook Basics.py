@@ -107,6 +107,11 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT "I'm running SQL!"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
@@ -136,7 +141,8 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-print("Hello Python!")
+# MAGIC %python
+# MAGIC print("Hello Python!")
 
 # COMMAND ----------
 
@@ -183,11 +189,11 @@ print("Hello Python!")
 # MAGIC 
 # MAGIC And of course, tables:
 # MAGIC 
-# MAGIC | name   | value |
-# MAGIC |--------|-------|
-# MAGIC | Yi     | 1     |
-# MAGIC | Ali    | 2     |
-# MAGIC | Selina | 3     |
+# MAGIC | name   | value |not
+# MAGIC |--------|-------|--------
+# MAGIC | Yi     | 1     |3
+# MAGIC | Ali    | 2     |4
+# MAGIC | Selina | 3     |5
 
 # COMMAND ----------
 
@@ -210,7 +216,7 @@ print("Hello Python!")
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC -- SELECT * FROM demo_tmp_vw
+# MAGIC  SELECT * FROM demo_tmp_vw
 
 # COMMAND ----------
 
@@ -391,6 +397,7 @@ display(files)
 # COMMAND ----------
 
 DA.cleanup()
+
 
 # COMMAND ----------
 

@@ -159,6 +159,7 @@ UPDATE students
 SET value = value + 1
 WHERE name LIKE "T%"
 
+
 -- COMMAND ----------
 
 -- MAGIC %md
@@ -237,6 +238,10 @@ WHEN MATCHED AND u.type = "delete"
   THEN DELETE
 WHEN NOT MATCHED AND u.type = "insert"
   THEN INSERT *
+
+-- COMMAND ----------
+
+select * from updates
 
 -- COMMAND ----------
 
