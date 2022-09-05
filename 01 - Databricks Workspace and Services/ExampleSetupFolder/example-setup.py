@@ -11,9 +11,9 @@ DA.conclude_setup()
 # COMMAND ----------
 
 # TODO
-my_name = "martin_radocha"
+my_name = "andrei_tugmeanu"
 
 # COMMAND ----------
 
-example_df = spark.range(16)
+example_df = spark.range(20)
 
