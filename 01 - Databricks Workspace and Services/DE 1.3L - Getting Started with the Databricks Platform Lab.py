@@ -144,9 +144,15 @@ display(example_df)
 # MAGIC # Create a Markdown Cell
 # MAGIC 
 # MAGIC Add a new cell below this one. Populate with some Markdown that includes at least the following elements:
-# MAGIC * A header
+# MAGIC * A header 
+# MAGIC # Header
 # MAGIC * Bullet points
+# MAGIC     * Yes
+# MAGIC     * No
+# MAGIC 
 # MAGIC * A link (using your choice of HTML or Markdown conventions)
+# MAGIC 
+# MAGIC     <a href="https://www.youtube.com/watch?v=CxzBKhVaRkU" target="_blank">Markdown - youtube</a>
 
 # COMMAND ----------
 
