@@ -11,7 +11,7 @@ DA.conclude_setup()
 # COMMAND ----------
 
 # TODO
-my_name = "martin_radocha"
+my_name ="Daniela_vlasceanu"
 
 # COMMAND ----------
 

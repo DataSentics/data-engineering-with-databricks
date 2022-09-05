@@ -12,6 +12,10 @@
 
 # MAGIC %md 
 # MAGIC **Your answers about DWH**
+# MAGIC - DWH Represents a traditional approach to working with data called ETL( Extract - Transform - Load)
+# MAGIC - 
+# MAGIC - Some advantages are : BI and reporting, structure data, optimized query, prevent conflicts
+# MAGIC - Some disadvantages are : poor supprt for unstructured data 
 
 # COMMAND ----------
 

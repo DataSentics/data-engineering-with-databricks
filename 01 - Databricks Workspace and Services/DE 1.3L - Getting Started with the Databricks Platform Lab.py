@@ -150,6 +150,13 @@ display(example_df)
 
 # COMMAND ----------
 
+# MAGIC %md # This is a header
+# MAGIC - bullet 1
+# MAGIC - bullet 2 
+# MAGIC - [example_link]("https://docs.databricks")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
