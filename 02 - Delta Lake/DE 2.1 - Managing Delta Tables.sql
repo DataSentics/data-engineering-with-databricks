@@ -236,7 +236,8 @@ WHEN MATCHED AND u.type = "update"
 WHEN MATCHED AND u.type = "delete"
   THEN DELETE
 WHEN NOT MATCHED AND u.type = "insert"
-  THEN INSERT *
+  THEN INSERT *;
+select * from students;
 
 -- COMMAND ----------
 
