@@ -173,6 +173,7 @@ SELECT * FROM global_temp.global_temp_view_dist_gt_1000;
 
 SHOW TABLES;
 
+
 -- COMMAND ----------
 
 -- MAGIC %md
