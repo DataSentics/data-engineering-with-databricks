@@ -25,7 +25,8 @@
 
 -- COMMAND ----------
 
--- Create the table here
+CREATE TABLE Company
+(name STRING, companyId INT, income Double);
 
 -- COMMAND ----------
 
@@ -40,11 +41,18 @@
 
 -- COMMAND ----------
 
--- INSERT 3 records in single transaction
+INSERT INTO Company VALUES
+("Netflix", 1, 25.5),
+("HBO GO", 2, 26.8),
+("AMZ Prime", 3, 32.8);
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+INSERT INTO Company VALUES ("DD Tv",4,5.1);
+INSERT INTO Company VALUES ("DD1 Tv",5,5.1);
+
+
 
 -- COMMAND ----------
 
@@ -60,7 +68,7 @@
 
 -- COMMAND ----------
 
--- Query/View your table here
+SELECT * from Company
 
 -- COMMAND ----------
 
@@ -76,7 +84,9 @@
 
 -- COMMAND ----------
 
--- Update your table here
+UPDATE Company
+SET name = "CCTV"
+Where name = "DD1 Tv"
 
 -- COMMAND ----------
 
@@ -91,7 +101,8 @@
 
 -- COMMAND ----------
 
--- Delete your table here
+DELETE from Company
+WHERE income = 5.1
 
 -- COMMAND ----------
 
@@ -114,7 +125,15 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
--- Merge the above updates into company table here
+MERGE INTO Company c
+USING updates u
+ON c.companyId=u.companyId
+WHEN MATCHED AND u.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND u.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND u.type = "insert"
+  THEN INSERT *;
 
 -- COMMAND ----------
 
@@ -129,6 +148,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Delete your table here
+drop table Company
 
 -- COMMAND ----------
 
@@ -208,10 +228,13 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+describe history students
+
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+RESTORE TABLE students VERSION AS OF 5
 
 -- COMMAND ----------
 
@@ -226,6 +249,9 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+OPTIMIZE students
+zorder by id
+
 
 -- COMMAND ----------
 
@@ -241,4 +267,8 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
--- Run the ZORDER command
+
+
+-- COMMAND ----------
+
+

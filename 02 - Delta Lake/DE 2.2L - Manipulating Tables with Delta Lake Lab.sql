@@ -261,14 +261,12 @@ SELECT * FROM new_beans
 -- COMMAND ----------
 
 -- TODO
-MERGE INTO new_beans b
-USING beans u
+MERGE INTO beans b
+USING new_beans u
 ON b.name=u.name AND b.color=u.color
-WHEN MATCHED AND u.type = "update"
-  THEN UPDATE SET *
-WHEN MATCHED AND u.type = "delete"
-  THEN DELETE
-WHEN NOT MATCHED AND u.type = "insert"
+WHEN MATCHED 
+  THEN UPDATE SET grams = b.grams+u.grams
+WHEN NOT MATCHED AND u.delicious = true
   THEN INSERT *
 
 -- COMMAND ----------
@@ -308,7 +306,7 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+DROP TABLE beans
 
 -- COMMAND ----------
 

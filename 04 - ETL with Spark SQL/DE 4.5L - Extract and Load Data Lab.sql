@@ -69,7 +69,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/events-kafka/
+CREATE OR REPLACE TABLE events_json
+LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
 
 -- COMMAND ----------
 

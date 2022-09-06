@@ -378,6 +378,15 @@ VACUUM students RETAIN 0 HOURS
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC display(spark.sql(f"SHOW SCHEMAS;"))
+
+-- COMMAND ----------
+
+
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC  
