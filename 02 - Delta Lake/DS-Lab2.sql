@@ -11,6 +11,8 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers about Delta Lake**
+-- MAGIC 
+-- MAGIC 1. delta lake 
 
 -- COMMAND ----------
 
@@ -26,6 +28,8 @@
 -- COMMAND ----------
 
 -- Create the table here
+create table if not exists Company
+  (name string, companyId int, income double);
 
 -- COMMAND ----------
 
@@ -41,10 +45,15 @@
 -- COMMAND ----------
 
 -- INSERT 3 records in single transaction
+insert into Company values 
+  ("Omar", 13, 24.5),
+  ("", 8, 12.3);
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+insert into Company values ("Diya", 15, 43.2);
+insert into Company values ("Inna", 99, 41.2);
 
 -- COMMAND ----------
 
@@ -62,6 +71,12 @@
 
 -- Query/View your table here
 
+
+-- COMMAND ----------
+
+-- MAGIC %sql
+-- MAGIC select * from Company
+
 -- COMMAND ----------
 
 -- MAGIC %md
@@ -77,6 +92,9 @@
 -- COMMAND ----------
 
 -- Update your table here
+UPDATE Company 
+SET income = income + 1
+WHERE name LIKE "E%";
 
 -- COMMAND ----------
 
@@ -92,6 +110,8 @@
 -- COMMAND ----------
 
 -- Delete your table here
+DELETE FROM Company 
+WHERE income > 7999;
 
 -- COMMAND ----------
 
@@ -115,6 +135,16 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+merge into Company c
+using updates u
+on c.companyId = u.companyId
+when matched and u.type = "update"
+  then update set * 
+when matched and u.type = "delete"
+  then delete
+when not matched and u.type = "insert"
+  then insert *;
+
 
 -- COMMAND ----------
 
@@ -129,6 +159,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Delete your table here
+drop table Company
 
 -- COMMAND ----------
 
@@ -208,10 +239,12 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+describe history Students
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+RESTORE TABLE Students TO VERSION AS OF 3 
 
 -- COMMAND ----------
 
@@ -226,6 +259,7 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+optimize Students
 
 -- COMMAND ----------
 
@@ -242,3 +276,9 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the ZORDER command
+optimize Students
+zorder by id
+
+-- COMMAND ----------
+
+
