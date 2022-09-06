@@ -29,6 +29,11 @@
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC display(spark.sql(f"SHOW SCHEMAS;"))
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 

@@ -10,7 +10,25 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers about Delta Lake**
+-- MAGIC 
+-- MAGIC ####Answer:
+-- MAGIC - **What it is?** Is a open source project that enables building a data lakehouse on top of existing storage system 
+-- MAGIC 
+-- MAGIC - **What advantages does it bring?** It is open source, builds upon standard data formats, optimized for cloud object storage, build for scalable metadata handling
+-- MAGIC 
+-- MAGIC - **What does ACID mean? Why do we need it?** 
+-- MAGIC 
+-- MAGIC A - atomicity: transaction either succed or fail completly
+-- MAGIC 
+-- MAGIC C - consistency: data is in a consistent state when a transaction starts and when it ends
+-- MAGIC 
+-- MAGIC I - isolation: how simultanious operations conflict one to another
+-- MAGIC 
+-- MAGIC D - durability: commited changes are permanent
+-- MAGIC 
+-- MAGIC - **What it is not?** Proprietary technology, storage format, storage medium, database service or data warehouse  
+-- MAGIC 
+-- MAGIC - **On top of what format it is built?** Data Lake 
 
 -- COMMAND ----------
 
@@ -26,6 +44,18 @@
 -- COMMAND ----------
 
 -- Create the table here
+CREATE TABLE IF NOT EXISTS company_at
+(name STRING, companyid INT, income DOUBLE)
+
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ####Answers:
+-- MAGIC 
+-- MAGIC - **Why do we not need to specify format?** The table is managed because to the unmanaged tabe you must specify the location (the path) where you create it
+-- MAGIC - **Why do we not need to specify format?** Because the defined format of the table is Delta
+-- MAGIC - **Where is the table physicali stored? What storage and database it use?** The table is stored inside the database directory location
 
 -- COMMAND ----------
 
@@ -41,10 +71,26 @@
 -- COMMAND ----------
 
 -- INSERT 3 records in single transaction
+INSERT INTO company_at
+VALUES 
+  ("Mike", 1, 4400.5),
+  ("Tiffany", 2, 9000.8),
+  ("Tom", 3, 8000.0)
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+INSERT INTO company_at VALUES ("Johm", 4, 4000.7);
+INSERT INTO company_at VALUES ("Bob", 5, 3600.1);
+
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ####Answers
+-- MAGIC - **What is a transaction?** A transaction is a unit of work that is performed against a database.
+-- MAGIC - **What does it mean commiting a transaction?** Commiting a transaction is the updating of a record in a database
+-- MAGIC - **What happens if the job fails midway?** The transaction fails because it respects the ACID principle
 
 -- COMMAND ----------
 
@@ -61,6 +107,22 @@
 -- COMMAND ----------
 
 -- Query/View your table here
+SELECT * FROM company_at
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ####Answers
+-- MAGIC 
+-- MAGIC - **How would you query it if it were in a different database?** With cross-database queries, you can query data from any database in the cluster, regardless of which database you are connected to.
+-- MAGIC 
+-- MAGIC - **How can you get older version of the table?** Using VERSION AS OF and the number of version you want to restore
+-- MAGIC 
+-- MAGIC - **How does the versioning of delta tables work? What does it use?** It saves the version of the tables starting from 0 to be able to go back if mistakes are done. It is uses tables stored in the transaction log
+-- MAGIC 
+-- MAGIC - **What does happen if someone is reading at the same time you are writing into the table?** The readers continue to see a snapshot view of the table that the Databricks job started with, even when a table is modified during a job.
+-- MAGIC 
+-- MAGIC - **How are concurent threads handled? What are the limitations?** 
 
 -- COMMAND ----------
 
@@ -77,6 +139,9 @@
 -- COMMAND ----------
 
 -- Update your table here
+UPDATE company_at 
+SET income = income - 1000
+WHERE name LIKE "T%"
 
 -- COMMAND ----------
 
@@ -92,6 +157,8 @@
 -- COMMAND ----------
 
 -- Delete your table here
+DELETE FROM company_at
+WHERE name LIKE "T%"
 
 -- COMMAND ----------
 
@@ -115,6 +182,19 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+MERGE INTO company_at c
+USING updates u
+ON c.companyId=u.companyId
+WHEN MATCHED AND u.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND u.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND u.type = "insert"
+  THEN INSERT *
+
+-- COMMAND ----------
+
+SELECT * FROM company_at
 
 -- COMMAND ----------
 
@@ -129,6 +209,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Delete your table here
+DROP TABLE company_at
 
 -- COMMAND ----------
 
@@ -137,24 +218,24 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
-CREATE TABLE students
+CREATE TABLE students_at
   (id INT, name STRING, value DOUBLE);
   
-INSERT INTO students VALUES (1, "Yve", 1.0);
-INSERT INTO students VALUES (2, "Omar", 2.5);
-INSERT INTO students VALUES (3, "Elia", 3.3);
+INSERT INTO students_at VALUES (1, "Yve", 1.0);
+INSERT INTO students_at VALUES (2, "Omar", 2.5);
+INSERT INTO students_at VALUES (3, "Elia", 3.3);
 
-INSERT INTO students
+INSERT INTO students_at
 VALUES 
   (4, "Ted", 4.7),
   (5, "Tiffany", 5.5),
   (6, "Vini", 6.3);
   
-UPDATE students 
+UPDATE students_at 
 SET value = value + 1
 WHERE name LIKE "T%";
 
-DELETE FROM students 
+DELETE FROM students_at 
 WHERE value > 6;
 
 CREATE OR REPLACE TEMP VIEW updates(id, name, value, type) AS VALUES
@@ -163,7 +244,7 @@ CREATE OR REPLACE TEMP VIEW updates(id, name, value, type) AS VALUES
   (7, "Blue", 7.7, "insert"),
   (11, "Diya", 8.8, "update");
   
-MERGE INTO students b
+MERGE INTO students_at b
 USING updates u
 ON b.id=u.id
 WHEN MATCHED AND u.type = "update"
@@ -187,12 +268,12 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- COMMAND ----------
 
 -- Write the first option to explore the students table in depth
-DESCRIBE EXTENDED students
+DESCRIBE EXTENDED students_at
 
 -- COMMAND ----------
 
 -- Write the second option to explore the students table in depth
-DESCRIBE DETAIL students
+DESCRIBE DETAIL students_at
 
 -- COMMAND ----------
 
@@ -208,10 +289,12 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+DESCRIBE HISTORY students_at
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+SELECT * FROM students_at VERSION AS OF 4
 
 -- COMMAND ----------
 
@@ -226,6 +309,7 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+OPTIMIZE students_at
 
 -- COMMAND ----------
 
@@ -242,3 +326,5 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the ZORDER command
+OPTIMIZE students_at
+ZORDER BY name
