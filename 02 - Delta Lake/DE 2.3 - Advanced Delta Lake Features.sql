@@ -67,7 +67,7 @@ VALUES
   (5, "Tiffany", 5.5),
   (6, "Vini", 6.3);
   
-UPDATE students 
+UPDATE students  
 SET value = value + 1
 WHERE name LIKE "T%";
 

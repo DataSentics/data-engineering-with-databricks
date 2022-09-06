@@ -10,7 +10,21 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers about Delta Lake**
+-- MAGIC **Your ANSWERS about Delta Lake**
+-- MAGIC - **What it is?**  
+-- MAGIC Is an open-source project that enables building a data lakehouse on top of existing storage systems
+-- MAGIC - **What advantages does it bring?**  
+-- MAGIC It optimizes cloud object storage (cheap, durable, highly availble, infinitly scalable)
+-- MAGIC - **What does ACID mean? Why do we need it?**  
+-- MAGIC ACID - Atomicity,Consistency,Isolation,Durability  
+-- MAGIC We need it so that mltiple writers across multiple clusters can simultaneously modify a table partition and see a consistent snapshot view of the table and there will be a serial order for these writes and for readers to continuously see a consistent snapshot view of the table that the Databricks job started with, even when a table is modified during a job.
+-- MAGIC - **What it is not?**  
+-- MAGIC Proprietary technology  
+-- MAGIC Storage format  
+-- MAGIC Storage medium  
+-- MAGIC Database service or data warehouse  
+-- MAGIC - **On top of what format it is built?**  
+-- MAGIC  Builds upon standard data formats
 
 -- COMMAND ----------
 
@@ -26,6 +40,20 @@
 -- COMMAND ----------
 
 -- Create the table here
+CREATE TABLE IF NOT EXISTS Company_Daniela
+  (name String, companyId Int , income Double)
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **ANSWERS**
+-- MAGIC - **Is this table managed or unmanaged?**  
+-- MAGIC This table is managed because the unmanaged table allways needs to specify a LOCATION(path) when the table is created.  
+-- MAGIC Here the table  is managed because Spark manages both the data and the metadata.
+-- MAGIC - **Why do we not need to specify format?**  
+-- MAGIC Because the default format is delta  
+-- MAGIC - **Where is the table physicali stored? What storage and database it use?**  
+-- MAGIC Inside the database directory location as data in Parquet files.  
 
 -- COMMAND ----------
 
@@ -40,11 +68,29 @@
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC **ANSWER**
+-- MAGIC - **What is a transaction?**  
+-- MAGIC Is a unit of work that is performed against a database. 
+-- MAGIC - **What does it mean commiting a transaction?**  
+-- MAGIC It means to make all changes visible to other users (updating a record in a database)
+-- MAGIC - **What happens if the job fails midway?**  
+-- MAGIC Changes are not commited until a job has succeded, jobs will either fail or succed complitely.
+
+-- COMMAND ----------
+
 -- INSERT 3 records in single transaction
+INSERT INTO Company_Daniela
+VALUES
+  ("Alex",1,253.20),
+  ("Edi",2,222.20),
+  ("Andrei",3,2233.20);
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+INSERT INTO Company_Daniela VALUES ("Alexx",4, 1034.0);
+INSERT INTO Company_Daniela VALUES ("Daniela",5, 234.34);
 
 -- COMMAND ----------
 
@@ -61,6 +107,25 @@
 -- COMMAND ----------
 
 -- Query/View your table here
+SELECT * FROM Company_Daniela;
+
+-- How would you query it if it were in a different database?
+-- SELECT * FROM dabase_name.company
+-- How can you get older version of the table?
+-- SELECT * FROM table_name VERSION AS OF version_desired
+
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **ANSWARE**
+-- MAGIC - **How does the versioning of delta tables work? What does it use?**  
+-- MAGIC Versioning means that you can return to a version of tha table from when it was created till now, that has all the modified states of the table in versions.  
+-- MAGIC It is used if you make a mistake and want to go back to a previous version or if you have to do another task on the data before the delet and so on.  
+-- MAGIC It use table are stored in the transaction log.
+-- MAGIC - **What does happen if someone is reading at the same time you are writing into the table?**  
+-- MAGIC Readers continue to see a consistent snapshot view of the table that the Azure Databricks job started with, even when a table is modified during a job.
+-- MAGIC - **How are concurent reads handled? What are the limitations?**  
 
 -- COMMAND ----------
 
@@ -77,6 +142,17 @@
 -- COMMAND ----------
 
 -- Update your table here
+-- UPDATE Company_Daniela
+-- SET name = "Babi"
+-- WHERE name = "Alex"
+
+DESCRIBE HISTORY Company_Daniela
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - **How many transactions has been triggered?**  
+-- MAGIC There were triggered two transactions
 
 -- COMMAND ----------
 
@@ -92,9 +168,14 @@
 -- COMMAND ----------
 
 -- Delete your table here
+-- DELETE FROM Company_Daniela
+-- WHERE companyId <= 2
+
+DESCRIBE HISTORY Company_Daniela
 
 -- COMMAND ----------
 
+-- MAGIC 
 -- MAGIC %md
 -- MAGIC ### Merging into your Delta table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
@@ -115,6 +196,15 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+MERGE INTO company_daniela a
+USING updates b
+ON a.companyId=b.companyId
+WHEN MATCHED AND b.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND b.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND b.type = "insert"
+  THEN INSERT *;
 
 -- COMMAND ----------
 
@@ -129,6 +219,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Delete your table here
+DROP TABLE Company_Daniela;
 
 -- COMMAND ----------
 
@@ -208,10 +299,12 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+DESCRIBE HISTORY students
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+RESTORE TABLE students TO VERSION AS OF 6
 
 -- COMMAND ----------
 
@@ -226,6 +319,7 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+OPTIMIZE students
 
 -- COMMAND ----------
 
@@ -242,3 +336,9 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the ZORDER command
+OPTIMIZE students
+ZORDER BY id
+
+-- COMMAND ----------
+
+
