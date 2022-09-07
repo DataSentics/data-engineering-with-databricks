@@ -239,3 +239,56 @@
 # MAGIC - **What it is not?** Proprietary technology, storage format, storage medium, database service or data warehouse  
 # MAGIC 
 # MAGIC - **On top of what format it is built?** Data Lake 
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### Transaction
+# MAGIC - What it is?
+# MAGIC - What does it mean commiting a transaction?
+# MAGIC - What happens if the job fails midway?
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ####Answers
+# MAGIC - **What is a transaction?** A transaction is a unit of work that is performed against a database.
+# MAGIC 
+# MAGIC - **What does it mean commiting a transaction?** Commiting a transaction is the updating of a record in a database
+# MAGIC 
+# MAGIC - **What happens if the job fails midway?** The transaction fails because it respects the ACID principle
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### Tables
+# MAGIC 
+# MAGIC - What a managed table?
+# MAGIC - What an unmanaged table?
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ####Answers
+# MAGIC 
+# MAGIC - **Managed**
+# MAGIC 
+# MAGIC Databricks manage data and metadata. When you drop a table, you drop data and metadata. Data is stored in dbfs root and metadata in hive metastore
+# MAGIC 
+# MAGIC - **Unmanaged**
+# MAGIC 
+# MAGIC Databricks manage just metadata. When you drop a table, you drop just metadata. Data is stored eternaly and metadata in hive metastore
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### What is the difference between view and temporary view?
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ####Answer
+# MAGIC 
+# MAGIC - **View** is similar to a table but have no real undelying data, so you can see its database
+# MAGIC 
+# MAGIC - **Temporary view** has no underlaying data and exists just for a specific spark session
