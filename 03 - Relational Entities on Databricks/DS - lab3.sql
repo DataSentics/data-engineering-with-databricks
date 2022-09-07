@@ -16,6 +16,8 @@
 -- MAGIC CREATE DATABASE IF NOT EXISTS customers  
 -- MAGIC - **You want to find a database location. What command you use?**  
 -- MAGIC DESCRIBE DATABASE EXTENDED and in the filed Location we can see the location 
+-- MAGIC - **You want to drop databases you will not need anymore, but the database contains tables. How can you drop the database with one command?**  
+-- MAGIC DROP DATABASE database_name CASCADE;
 
 -- COMMAND ----------
 
@@ -59,7 +61,7 @@
 -- MAGIC - **What is the difference between view and temporary view?**  
 -- MAGIC  Temp views are tied to a Spark session and as such are not accessible from another session
 -- MAGIC - **You want to create a view, which be used by other users. What view should you create and why?**  
--- MAGIC 
+-- MAGIC CREATE GLOBAL TEMP VIEW view_name -- because eny user can see it 
 -- MAGIC - **With what command you find out that view is temporary?**  
 -- MAGIC SHOW TABLES; and in the output if the isTemporary is true that means that is temporary
 -- MAGIC - **What is a difference between table and view?**  
