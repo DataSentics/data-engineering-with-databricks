@@ -12,6 +12,20 @@
 
 # MAGIC %md 
 # MAGIC **Your answers about DWH**
+# MAGIC ### What is it: 
+# MAGIC A data warehouse is a relational data management system that is designed to support BI activities
+# MAGIC  
+# MAGIC ### What is the main use case: 
+# MAGIC It is used to perform queries and analysis
+# MAGIC  
+# MAGIC ### What are some of the advantages: 
+# MAGIC Can contain large amounts of data, perform accurate analysis, has ELT solutions, subject-oriented and nonvolatile
+# MAGIC  
+# MAGIC ### What are some of the disadvantages: 
+# MAGIC When performing bigger jobs it is hard to scale, can store only structured data (e.g. tables)
+# MAGIC  
+# MAGIC ### What data modeling approach is used:  
+# MAGIC Architecture for Data Warehousing and Business Intelligence.
 
 # COMMAND ----------
 
@@ -28,6 +42,20 @@
 
 # MAGIC %md
 # MAGIC **Your answers about Data Lake**
+# MAGIC ### What is it: 
+# MAGIC A data warehouse is a relational data management system that is designed to support BI activities
+# MAGIC  
+# MAGIC ### What is the main use case: 
+# MAGIC It is used to perform queries and analysis
+# MAGIC  
+# MAGIC ### What are some of the advantages: 
+# MAGIC Can contain large amounts of data, perform accurate analysis, has ELT solutions, subject-oriented and nonvolatile
+# MAGIC  
+# MAGIC ### What are some of the disadvantages: 
+# MAGIC When performing bigger jobs it is hard to scale, can store only structured data (e.g. tables)
+# MAGIC  
+# MAGIC ### What data modeling approach is used:  
+# MAGIC Architecture for Data Warehousing and Business Intelligence.
 
 # COMMAND ----------
 
@@ -46,11 +74,32 @@
 
 # MAGIC %md
 # MAGIC **Your answers about Data LakeHouse**
+# MAGIC ### What is it?
+# MAGIC A data lakehouse is a new, open data management architecture that combines the flexibility, cost-efficiency, and scale of data lakes with the data management and ACID transactions of data warehouses, enabling business intelligence (BI) and machine learning (ML) on all data
+# MAGIC ### What is the maiuse case?
+# MAGIC A data lakehouse is a data management architecture that combines the benefits of a traditional data warehouse and a data lake. It seeks to merge the ease of access and support for enterprise analytics capabilities found in data warehouses with the flexibility and relatively low cost of the data lake.
+# MAGIC ### What are some of the advantages? 
+# MAGIC Less time and effort administrating. Simplified schema and data governance. Reduced data movement and redundancy. Direct access to data for analysis tools. Cost-effective data storage.
+# MAGIC 
+# MAGIC ### What are some of the disadvantages?
+# MAGIC Relatively new and is far away to stand as a mature storage system.Need out of a box approach or else is costly to maintain.Underestimation of data loading resources.Hidden problems in source systems.Data homogenization
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### What are some of the problems organizations face when working with data?
+# MAGIC - Costly to keep historical data versions (snapsots)
+# MAGIC - Sheer Volume of Data
+# MAGIC - Multiple Data Storages
+# MAGIC - Data Quality
+# MAGIC - Lack of Processes and Systems
+# MAGIC - Data Integration
+# MAGIC - Lack of Skilled Resources
+# MAGIC - Data Governance
+# MAGIC - Data Security
+# MAGIC - Data Automation
+# MAGIC - Data Analysis
+# MAGIC - Going from Unstructured to Structured Data
 
 # COMMAND ----------
 
@@ -70,6 +119,14 @@
 
 # MAGIC %md
 # MAGIC **Your answers about DBX architecture**
+# MAGIC ### What are the components and name of the 1 parts 
+# MAGIC Control Plane: Web application, Jobs, Repos, Cluster Management
+# MAGIC ### What are the components and name of the 2 part
+# MAGIC Data Plane:  Databricks File System, Data Sources
+# MAGIC ### What is the difference between the 2 parts
+# MAGIC Control Plane is the environment you are working on (web application, jobs, repos)and the Data Plane is where all the data is proccessed
+# MAGIC ### Who manages which part of the architecture
+# MAGIC Control Plane by customers accounts, datasets, clusters and Data Plane by Cluster management (workloads)
 
 # COMMAND ----------
 
@@ -86,6 +143,26 @@
 
 # MAGIC %md
 # MAGIC **Your answers about clusters**
+# MAGIC ### What type of clusters do we have?
+# MAGIC There are two clusters: All-Purpose Cluster and Job Cluster
+# MAGIC 
+# MAGIC ### What are the differences between them?
+# MAGIC All-Purpose cluster is used to analyze data collaboratively using notebooks by one or more people and the **Job cluster** is  used to schedule jobs at a given time (the cluster is terminated when the job is done)
+# MAGIC 
+# MAGIC ### How do you specify a runtime in cluster?
+# MAGIC When you create a cluster or edit it you can choose manually the version your cluster will run  
+# MAGIC 
+# MAGIC ### What you need to do when configuration of cluster has changed?
+# MAGIC Detach and Re-attache
+# MAGIC 
+# MAGIC ### What is the difference between restarting, terminating and deleting the cluster?
+# MAGIC 
+# MAGIC Restart - used to manually restart the cluster. usefull when you need to clear the cache on the cluster.
+# MAGIC 
+# MAGIC Terminate - stop our cluster but the cluster configuration is maintained 
+# MAGIC 	and can be reused using restart to set a new set of cloud resources.
+# MAGIC 
+# MAGIC Delete - stop and remove the cluster configuration.
 
 # COMMAND ----------
 
@@ -102,6 +179,8 @@
 
 # MAGIC %md
 # MAGIC **Your answers about Databricks UI**
+# MAGIC #### What is the purpose of DataScience&Engineering?
+# MAGIC Data science means cleaning and alayzing data, providing metrics for Business problems and data engineers develop, test and maintain applications
 
 # COMMAND ----------
 
@@ -117,3 +196,13 @@
 
 # MAGIC %md
 # MAGIC **Your answers about notebooks**
+# MAGIC ### How to run a cell, all cells above/below?
+# MAGIC You click on the right-up corner arrow and you have all 3 commands 
+# MAGIC ### How to attach cluster, clear a state of notebook, what does 
+# MAGIC Clearing a state means, when you need to do it?** you can attach a cluster when you want to run a command. You need to clear the state because it is saveing memory in the cache and it takes resources and money
+# MAGIC ### How to create a cells in different language?
+# MAGIC magic command or set the default language in the right-up corner
+# MAGIC # What are some of the magic commands, how can you run a different notebook from within a notebook?
+# MAGIC %md, %sql, %python, %fl. 
+# MAGIC #What are some of the special functions databricks makes available to you?
+# MAGIC any(expr), approx_count_distinct(expr[,relativeSD]), ...

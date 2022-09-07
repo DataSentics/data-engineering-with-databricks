@@ -51,12 +51,13 @@ CREATE TABLE alexb_Company (name string, companyId int, income Double)
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ## #Is this table managed or unmanaged?
+-- MAGIC **Answers**
+-- MAGIC #### Is this table managed or unmanaged?
 -- MAGIC The table is managed
--- MAGIC ### Why do we not need to specify format?
+-- MAGIC #### Why do we not need to specify format?
 -- MAGIC Delta is already a default format
--- MAGIC ### Where is the table physicali stored? What storage and database it use?
--- MAGIC The table is stored in the cloud, is uses parquet storage and it uses the default database
+-- MAGIC #### Where is the table physicali stored? What storage and database it use?
+-- MAGIC The table is stored in the metastore, is uses parquet storage and it uses the default database
 
 -- COMMAND ----------
 
@@ -68,6 +69,16 @@ CREATE TABLE alexb_Company (name string, companyId int, income Double)
 -- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
 -- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
 -- MAGIC - What happens if the job fails midway?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### What is a transaction?
+-- MAGIC A transaction is a unit of work that is performed against a database.
+-- MAGIC #### What does it mean commiting a transatcion?
+-- MAGIC Committing a transaction means making permanent the changes performed by the SQL statements within the transaction.
+-- MAGIC #### What happens if the job fails midway?
+-- MAGIC It deletes the data stored and you have to run it again.
 
 -- COMMAND ----------
 
@@ -129,6 +140,23 @@ SELECT * FROM alexb_Company;
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC #### How many transactions has been triggered?
+-- MAGIC 2
+-- MAGIC #### How is concurency when updating and reading handled?
+-- MAGIC Multiple writers across multiple clusters can simultaneously modify a table partition and see a consistent snapshot view of the table.
+-- MAGIC Readers continue to see a consistent snapshot view of the table that the Databricks job started with, even when a table is modified during a job.
+-- MAGIC 
+-- MAGIC #### After what time can you see the updated records in the table?
+-- MAGIC Right after the update command was executed
+-- MAGIC #### What happens if the job fails midway?
+-- MAGIC Nothing happens with the query, it does not apply
+-- MAGIC #### How does the versioning work? Has a new version been created or the existing one updated?
+-- MAGIC Versioning is the process of assigning a unique number to each update of your application or library. You can use a version of the table if you might have some issues with the current data.
+-- MAGIC A new version was created when using Update.
+
+-- COMMAND ----------
+
 -- Update your table here
 UPDATE alexb_Company SET name = 'Alinus' WHERE name LIKE "Gica";
 
@@ -145,6 +173,18 @@ UPDATE alexb_Company SET name = 'Alinus' WHERE name LIKE "Gica";
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC #### How many transactions has been triggered?
+-- MAGIC 2
+-- MAGIC #### How is concurency when deleting and reading handled?
+-- MAGIC Multiple writers across multiple clusters can simultaneously modify a table partition and see a consistent snapshot view of the table. Readers continue to see a consistent snapshot view of the table that the Databricks job started with, even when a table is modified during a job.
+-- MAGIC #### After what time the records are removed from the table?
+-- MAGIC The records are remove right after the delete query was done.
+-- MAGIC #### How does the versioning work? Has a new version been created or the existing one updated
+-- MAGIC Versioning is the process of assigning a unique number to each update of your application or library. You can use a version of the table if you might have some issues with the current data. A new version was created when using Delete.
+
+-- COMMAND ----------
+
 -- Delete your table here
 DELETE FROM alexb_Company WHERE companyId=6 
 
@@ -157,6 +197,16 @@ DELETE FROM alexb_Company WHERE companyId=6
 -- MAGIC - What advantages does MERGE bring over doing the action in doing update, delete and insert separately?
 -- MAGIC - What are the requirements on matching? 
 -- MAGIC - What happens if the job fails midway?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### What advantages does MERGE bring over doing the action in doing update, delete and insert separately?
+-- MAGIC MERGE is very useful, especially when it comes to loading data warehouse tables, which can be very large and require specific actions to be taken when rows are or are not present. MERGE is a combination of update, delete and insert which makes it more easy to read and operate.
+-- MAGIC #### What are the requirements on matching?
+-- MAGIC The requirements on matching are that the column from the table A is the same as the column in table B
+-- MAGIC #### What happens if the job fails midway?
+-- MAGIC Nothing happens with the query, it does not apply
 
 -- COMMAND ----------
 
@@ -189,6 +239,15 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- MAGIC - How does the delete statement behave when deleting managed and unmanaged tables? 
 -- MAGIC - How many transactions have been triggered?
 -- MAGIC - What happens if the job fails midway?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### How does the delete statement behave when deleting managed and unmanaged tables?
+-- MAGIC #### How many transactions have been triggered?
+-- MAGIC 3
+-- MAGIC #### What happens if the job fails midway?
+-- MAGIC Nothing happens with the query, it does not apply
 
 -- COMMAND ----------
 
@@ -251,6 +310,18 @@ WHEN NOT MATCHED AND u.type = "insert"
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC #### How can you explore the students table(metadata) what are the available commands to do so?
+-- MAGIC SELECT * FROM INFORMATION_SCHEMA.columns c WHERE c.table_name = 'table_name'
+-- MAGIC #### How many partitions does the table have, have can you change the number of partitions?
+-- MAGIC The number of maximum partitions is the maximum number of the cluster, and you can change it with repartition('number_of_partitions')
+-- MAGIC #### Where is the data physically located?
+-- MAGIC Data is stored eternaly in the metastore
+-- MAGIC #### What further information can you find in metadata?
+-- MAGIC Information regarding tables, columns, constraints, foreign keys, indexes, and sequences.
+
+-- COMMAND ----------
+
 -- Write the first option to explore the students table in depth
 DESCRIBE EXTENDED students
 
@@ -269,6 +340,21 @@ DESCRIBE DETAIL students
 -- MAGIC - How long into the history can you go?
 -- MAGIC - What cleans the history?
 -- MAGIC - How can you change for how long the history is retained?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### How can you see the history of the delta table?
+-- MAGIC DESCRIBE HYSTORY table_name
+-- MAGIC #### How can you rollback to different version?
+-- MAGIC RESTORE TABLE table_name TO VERSION AS OF version_number
+-- MAGIC #### How is the history retained?
+-- MAGIC #### How long into the history can you go?
+-- MAGIC From the first version of the table to the last.
+-- MAGIC #### What cleans the history?
+-- MAGIC It is stored for 30 days. Then it is deleted automatically
+-- MAGIC #### How can you change for how long the history is retained?
+-- MAGIC deltaTable.logRetentionDuration  = "interval {number_of_days} days"
 
 -- COMMAND ----------
 

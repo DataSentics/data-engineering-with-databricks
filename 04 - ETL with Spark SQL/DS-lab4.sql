@@ -1,4 +1,8 @@
 -- Databricks notebook source
+
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC #Querying Data Directly from Files
@@ -11,6 +15,14 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC #### What data formats are most useful for direct querying?
+-- MAGIC JSON, parquet, delta
+-- MAGIC #### What data formats do not work with direct queries?
+-- MAGIC CSV, Txt
+-- MAGIC #### What is the syntax for direct querying of json file?
+-- MAGIC SELECT * FROM json.`${directory.paths}/path_to_table`;
+-- MAGIC #### Can we query files simultaneously from directory? If yes, what are the assumptions?
+-- MAGIC Yes, we can.
 
 -- COMMAND ----------
 
@@ -23,6 +35,7 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC If it is not commited the data will not be uploaded, you should commit after inserting new rows.
 
 -- COMMAND ----------
 
@@ -52,6 +65,14 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC #### New data engineer wants to replace the data in table named customers. He deleted the tables and create a new table with the same name. Describe why that approach is bad and what should be done instead. What are the benefits of the right solution?
+-- MAGIC Data loss is the top bad thing. The best way to modify is to use transactions.
+-- MAGIC 
+-- MAGIC #### What means CRAS statement? 
+-- MAGIC CREATE OR REPLACE AS SELECT
+-- MAGIC 
+-- MAGIC #### You want to overwrite table, but you are not sure if the table exists 
+-- MAGIC CREATE OR REPLACE
 
 -- COMMAND ----------
 
@@ -65,6 +86,12 @@
 
 -- MAGIC %md
 -- MAGIC **Your Answers**
+-- MAGIC #### You want to calculate missing records in column **name** as **missing names** in the table named **companies**. Write command to calculate them.
+-- MAGIC SELECT name FROM companies Where name is null 
+-- MAGIC #### Write a query for calculating distinct values from **names** column for the table **companies**.
+-- MAGIC SELECT DISTINCT(names) FROM companies
+-- MAGIC #### You have the table named **toys_dup** where is many duplicated rows. Write a query for creating a new table without duplicated columns called **toys_dedup**.
+-- MAGIC CREATE OR REPLACE TABLE toys_dedup AS SELECT DISTINCT(*) FROM toys_dedup;
 
 -- COMMAND ----------
 
@@ -91,3 +118,14 @@
 -- MAGIC #SQL UDFs
 -- MAGIC - Write command for creating SQL UDF named **add_five** which adds 5 to a column and returns integer.
 -- MAGIC - What is the usage of case/when construct?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **Your Answers**
+-- MAGIC #### Write command for creating SQL UDF named **add_five** which adds 5 to a column and returns integer.
+-- MAGIC CREATE OR REPLACE FUNCTION add(number INT)
+-- MAGIC RETURNS INT
+-- MAGIC RETURN number + 5
+-- MAGIC #### What is the usage of case/when construct?
+-- MAGIC Evaluates statements with different outcomes
