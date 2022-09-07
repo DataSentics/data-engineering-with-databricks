@@ -206,6 +206,7 @@ WHERE
   user_first_touch_timestamp IS NULL AND
   email IS NULL AND
   updated IS NULL
+  
 
 -- COMMAND ----------
 

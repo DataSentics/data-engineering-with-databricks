@@ -97,7 +97,7 @@
 
 -- COMMAND ----------
 
-SELECT * FROM json.`${DA.paths.kafka_events}/001.json`
+SELECT * FROM json.`${DA.paths.kafka_events}/005.json`
 
 -- COMMAND ----------
 

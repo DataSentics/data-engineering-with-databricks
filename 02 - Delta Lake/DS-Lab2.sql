@@ -10,9 +10,21 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers about Delta Lake**
--- MAGIC 
--- MAGIC 1. delta lake 
+-- MAGIC **Your ANSWERS about Delta Lake**
+-- MAGIC - **What it is?**  
+-- MAGIC Is an open-source project that enables building a data lakehouse on top of existing storage systems
+-- MAGIC - **What advantages does it bring?**  
+-- MAGIC It optimizes cloud object storage (cheap, durable, highly availble, infinitly scalable)
+-- MAGIC - **What does ACID mean? Why do we need it?**  
+-- MAGIC ACID - Atomicity,Consistency,Isolation,Durability  
+-- MAGIC We need it so that mltiple writers across multiple clusters can simultaneously modify a table partition and see a consistent snapshot view of the table and there will be a serial order for these writes and for readers to continuously see a consistent snapshot view of the table that the Databricks job started with, even when a table is modified during a job.
+-- MAGIC - **What it is not?**  
+-- MAGIC Proprietary technology  
+-- MAGIC Storage format  
+-- MAGIC Storage medium  
+-- MAGIC Database service or data warehouse  
+-- MAGIC - **On top of what format it is built?**  
+-- MAGIC Runs on top of your existing data lake
 
 -- COMMAND ----------
 
@@ -24,6 +36,16 @@
 -- MAGIC - Why do we not need to specify format?
 -- MAGIC - Where is the table physicali stored? What storage and database it use?
 -- MAGIC - Make sure the cell creating the table can be run multiple times in a row
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - Is this table managed or unmanaged?
+-- MAGIC  Yes this is a managed table because we don t specify the location.
+-- MAGIC - Why do we not need to specify format?
+-- MAGIC  Because it will use the default format delta.
+-- MAGIC - Where is the table physicali stored? What storage and database it use?
+-- MAGIC  In the databricks file sistem storage.
 
 -- COMMAND ----------
 
@@ -41,6 +63,17 @@ create table if not exists Company
 -- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
 -- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
 -- MAGIC - What happens if the job fails midway?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - What is a transaction? 
+-- MAGIC A transaction is a unit of work that is performed against a database.
+-- MAGIC 
+-- MAGIC - What does it mean commiting a transaction?
+-- MAGIC In a general sense, a commit is the updating of a record in a database.
+-- MAGIC 
+-- MAGIC - What happens if the job fails midway?All the things will not apply if a job fails midway.
 
 -- COMMAND ----------
 
@@ -65,6 +98,20 @@ insert into Company values ("Inna", 99, 41.2);
 -- MAGIC - How can you get older version of the table?
 -- MAGIC - How does the versioning of delta tables work? What does it use? 
 -- MAGIC - What does happen if someone is reading at the same time you are writing into the table? 
+-- MAGIC - How are concurent reads handled? What are the limitations?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - How would you query it if it were in a different database?
+-- MAGIC We can use name of database dot name of the table or simply type USE and name of new database.
+-- MAGIC - How can you get older version of the table?
+-- MAGIC We can get an older version by using restore comand and get a version of a table.
+-- MAGIC - How does the versioning of delta tables work? What does it use? 
+-- MAGIC We can have a version of a table for every modify of the table.
+-- MAGIC - What does happen if someone is reading at the same time you are writing into the table? 
+-- MAGIC Readers continue to see a consistent snapshot view of the table that the Azure Databricks job started with, even when a table is modified during a job.
+-- MAGIC 
 -- MAGIC - How are concurent reads handled? What are the limitations?
 
 -- COMMAND ----------
