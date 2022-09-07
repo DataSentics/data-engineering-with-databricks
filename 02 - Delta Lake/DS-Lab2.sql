@@ -34,10 +34,13 @@ CREATE TABLE Company
 -- MAGIC ### Insert into the table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - What is a transaction? 
+-- MAGIC A transaction is a unit of work that is performed against a database.
 -- MAGIC - What does it mean commiting a transaction? 
+-- MAGIC Committing means that a user has explicitly or implicitly requested that the changes in the transaction be made permanent
 -- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
 -- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
 -- MAGIC - What happens if the job fails midway?
+-- MAGIC being acid transaction nothing, 0 changes
 
 -- COMMAND ----------
 
@@ -61,6 +64,7 @@ INSERT INTO Company VALUES ("DD1 Tv",5,5.1);
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Query your delta table customers
 -- MAGIC - How would you query it if it were in a different database?
+-- MAGIC db_name.schema_name.tb_name
 -- MAGIC - How can you get older version of the table?
 -- MAGIC - How does the versioning of delta tables work? What does it use? 
 -- MAGIC - What does happen if someone is reading at the same time you are writing into the table? 

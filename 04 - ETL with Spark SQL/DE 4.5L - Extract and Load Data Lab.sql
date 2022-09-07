@@ -68,9 +68,15 @@
 
 -- COMMAND ----------
 
+
+
+-- COMMAND ----------
+
 -- TODO
-CREATE OR REPLACE TABLE events_json
-LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
+CREATE TABLE IF NOT EXISTS events_json
+ (key BINARY, offset BIGINT, partition INT, timestamp BIGINT,topic STRING, value BINARY)
+USING json
+OPTIONS (path= "${da.paths.datasets}/ecommerce/raw/events-kafka/")
 
 -- COMMAND ----------
 
@@ -101,7 +107,8 @@ LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE OR REPLACE TABLE events_raw
+  (key Binary,offset BIGINT, partition int, timestamp bigint,topic string,value binary);
 
 -- COMMAND ----------
 
@@ -130,7 +137,9 @@ LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+insert into events_raw
+select * from events_json
+
 
 -- COMMAND ----------
 
@@ -142,7 +151,7 @@ LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+select * from events_raw
 
 -- COMMAND ----------
 
@@ -171,7 +180,8 @@ LOCATION "${da.paths.datasets}/ecommerce/raw/events-kafka/""
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup
+AS SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`
 
 -- COMMAND ----------
 

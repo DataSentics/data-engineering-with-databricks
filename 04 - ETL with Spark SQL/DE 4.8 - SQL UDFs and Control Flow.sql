@@ -161,7 +161,7 @@ FROM foods
 
 -- COMMAND ----------
 
-CREATE FUNCTION foods_i_like(food STRING)
+CREATE FUNCTION OR REPLACE foods_i_like(food STRING)
 RETURNS STRING
 RETURN CASE 
   WHEN food = "beans" THEN "I love beans"
