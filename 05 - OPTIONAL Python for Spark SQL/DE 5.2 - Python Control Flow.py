@@ -544,7 +544,7 @@ def injection_check(query):
 
 # COMMAND ----------
 
-# injection_check(injection_query)
+#injection_check(injection_query)
 
 # COMMAND ----------
 

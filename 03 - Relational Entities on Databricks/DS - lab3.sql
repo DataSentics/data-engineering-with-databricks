@@ -33,7 +33,9 @@
 -- MAGIC ###Answers:
 -- MAGIC 
 -- MAGIC - **How do you create a managed table?** CREATE TABLE IF NOT EXISTS table_name
+-- MAGIC 
 -- MAGIC - **How do you create a managed table from existing table?** CREATE OR REPLACE TABLE table_name (...); SELECT * FROM parquet existing_name
+-- MAGIC 
 -- MAGIC - **How do you create a unmanaged table?** CREATE TABLE IF NOT EXISTS table_name LOCATION path
 
 -- COMMAND ----------

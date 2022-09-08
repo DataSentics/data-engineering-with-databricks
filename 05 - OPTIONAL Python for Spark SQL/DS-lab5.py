@@ -8,4 +8,19 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your Answers**
+# MAGIC ####Answer
+
+# COMMAND ----------
+
+#1
+my_var = "Hello"
+print(my_var)
+
+#2
+spark.sql("SELECT * FROM table")
+
+#3
+multi_line = """multi
+line
+string
+"""
