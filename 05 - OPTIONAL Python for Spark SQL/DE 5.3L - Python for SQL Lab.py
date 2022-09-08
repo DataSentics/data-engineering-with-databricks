@@ -225,6 +225,11 @@ display(results)
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC select * from demo_table
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
@@ -246,14 +251,25 @@ display(results)
 # COMMAND ----------
 
 # TODO
-def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
-    query = <FILL-IN>
+def preview_values(state=None, render_results=False):
+    query = "SELECT id, value from demo_table "
 
     if state is not None:
-        <FILL-IN>
+        assert state.upper()==state and len(state) == 2
+        query = f"SELECT id, value from demo_table WHERE state = '{state}'"
+    
+    query_to_sql = spark.sql(query)
+    if render_results:
+        return None
+    else:
+        return query_to_sql
 
-    if render_results
-        <FILL-IN>
+
+# COMMAND ----------
+
+print("""Multi-
+line
+string""")
 
 
 # COMMAND ----------
