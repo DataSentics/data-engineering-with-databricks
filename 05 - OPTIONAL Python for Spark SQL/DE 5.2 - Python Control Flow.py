@@ -245,7 +245,7 @@ assert type(2) == int
 
 # COMMAND ----------
 
-#assert type("2") == int
+# assert type("2") == int
 
 # COMMAND ----------
 
@@ -286,7 +286,7 @@ int("2")
 
 # COMMAND ----------
 
-#int("two")
+# int("two")
 
 # COMMAND ----------
 

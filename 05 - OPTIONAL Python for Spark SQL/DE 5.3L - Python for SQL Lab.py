@@ -245,15 +245,25 @@ display(results)
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT * FROM demo_table
+
+# COMMAND ----------
+
 # TODO
-def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
-    query = <FILL-IN>
+def preview_values(state=None, render_results=False):
+    query_select = "SELECT id, value FROM demo_table"
 
     if state is not None:
-        <FILL-IN>
-
-    if render_results
-        <FILL-IN>
+        assert state.upper()== state and len(state) == 2, "Please use the two uppercase letters format"
+        query_select += f" WHERE state = '{state}'"
+    
+    results = spark.sql(query_select)
+    if render_results:
+        display(results)
+        return None
+    else:
+        return results
 
 
 # COMMAND ----------

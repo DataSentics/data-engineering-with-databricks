@@ -8,4 +8,22 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC **Your answers**  
+-- MAGIC - **What is advantage of incremental data ingestion?**  
+-- MAGIC Inexpensive big data storage  
+-- MAGIC Efficiency  
+-- MAGIC Multiple datasets and use cases  
+-- MAGIC Atomic and always available data  
+-- MAGIC Stateful changes  
+-- MAGIC Latency  
+-- MAGIC Historic datasets/reproducibility
+-- MAGIC - **What has to be included in your stream read query to automatically use AutoLoad?**  
+-- MAGIC df = (spark  
+-- MAGIC       .readStream  
+-- MAGIC       .format("cloudFiles")  
+-- MAGIC       .options("cloudFiles.format", "csv")    
+-- MAGIC       .option("cloudFiles.schemaLocation", customers_checkpoint_path)  
+-- MAGIC       .load(autoLoaderSrcPath))  
+-- MAGIC The format must be "coudFiles" and the two options with (cloudFile.format and cloudFile.schemaLocation)
+-- MAGIC - **What happens when a failure occurs during a streaming read?**  
+-- MAGIC Apache Spark Streaming has included support for recovering from failures of both driver and worker machines. However, for some data sources, input data could get lost while recovering from the failures.
