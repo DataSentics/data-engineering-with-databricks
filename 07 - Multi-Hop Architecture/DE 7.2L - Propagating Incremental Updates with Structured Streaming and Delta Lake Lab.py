@@ -48,10 +48,14 @@ dataset_source = f"{DA.paths.datasets}/retail-org/customers/"
 
 query = (spark
   .readStream
-  <FILL-IN>
+  .format("cloudFiles")
+  .option("cloudFiles.format", "csv")
+  .option("cloudFiles.schemaLocation", customers_checkpoint_path)
   .load(dataset_source)
   .writeStream
-  <FILL-IN>
+  .format("delta")
+  .option("checkpointLocation", customers_checkpoint_path)
+  .outputMode("append")
   .table("bronze")
 )
 
@@ -103,8 +107,9 @@ assert spark.table("bronze").dtypes ==  [('customer_id', 'string'), ('tax_id', '
 # MAGIC %sql
 # MAGIC -- TODO
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW bronze_enhanced_temp AS
-# MAGIC SELECT
-# MAGIC   <FILL-IN>
+# MAGIC SELECT * ,current_timestamp() as receipt_time ,input_file_name() as source_file  
+# MAGIC from bronze_temp
+# MAGIC where postcode > 0
 
 # COMMAND ----------
 
@@ -113,6 +118,9 @@ assert spark.table("bronze").dtypes ==  [('customer_id', 'string'), ('tax_id', '
 # MAGIC Run the cell below to check your work.
 
 # COMMAND ----------
+
+
+
 
 assert spark.table("bronze_enhanced_temp"), "Table named `bronze_enhanced_temp` does not exist"
 assert spark.sql(f"SHOW TABLES").filter(f"tableName == 'bronze_enhanced_temp'").first()["isTemporary"] == True, "Table is not temporary"
@@ -134,8 +142,11 @@ assert spark.table("bronze_enhanced_temp").isStreaming, "Not a streaming table"
 silver_checkpoint_path = f"{DA.paths.checkpoints}/silver"
 
 query = (spark.table("bronze_enhanced_temp")
-  <FILL-IN>
-  .table("silver"))
+              .writeStream
+              .format("delta")
+              .option("checkpointLocation", silver_checkpoint_path)
+              .outputMode("append")
+              .table("silver"))
 
 # COMMAND ----------
 
@@ -184,8 +195,9 @@ assert spark.table("silver").filter("postcode <= 0").count() == 0, "Null postcod
 # MAGIC %sql
 # MAGIC -- TODO
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW customer_count_temp AS
-# MAGIC SELECT 
-# MAGIC <FILL-IN>
+# MAGIC SELECT state , count(customer_id) as customer_count
+# MAGIC from silver_temp
+# MAGIC group by state
 
 # COMMAND ----------
 
@@ -211,10 +223,13 @@ assert spark.table("customer_count_temp").dtypes ==  [('state', 'string'), ('cus
 # TODO
 customers_count_checkpoint_path = f"{DA.paths.checkpoints}/customers_counts"
 
+
 query = (spark
   .table("customer_count_temp")
   .writeStream
-  <FILL-IN>
+  .format("delta")
+  .option("checkpointLocation", customers_count_checkpoint_path)
+  .outputMode("complete")
   .table("gold_customer_count_by_state"))
 
 # COMMAND ----------

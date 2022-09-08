@@ -88,12 +88,27 @@ select * from events
 
 -- COMMAND ----------
 
+select * from tmp1
+
+-- COMMAND ----------
+
+-- practice for pivot function
+-- select * from(select event_name, user_id, event_timestamp
+-- from tmp1)
+-- PIVOT (sum(event_timestamp) for user_id in
+-- ('UA000000106466918', 'UA000000106513930', 'UA000000106522140', 'UA000000106524533', 'UA000000106525232', 'UA000000106530656', 'UA000000106541016', 'UA000000106541282', 'UA000000106552410', 
+-- 'UA000000106539566'));
+
+
+
+-- COMMAND ----------
+
 -- TODO
 CREATE OR REPLACE VIEW events_pivot
 as select * from (
-select user_id user, event_name
+select user_id user, event_name,event_timestamp
 from events)
-PIVOT (count(*) for event_name in
+PIVOT (max(event_timestamp) for event_name in
 ("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
 "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
 "cc_info", "foam", "reviews", "original", "delivery", "premium"));
@@ -167,7 +182,9 @@ select * from events_pivot;
 
 -- TODO
 CREATE OR REPLACE VIEW clickpaths AS
-<FILL_IN>
+select * from events_pivot ep
+join transactions t  
+on ep.user = t.user_id
 
 -- COMMAND ----------
 
@@ -206,9 +223,10 @@ CREATE OR REPLACE VIEW clickpaths AS
 
 -- TODO
 CREATE OR REPLACE TABLE sales_product_flags AS
-<FILL_IN>
-EXISTS <FILL_IN>.item_name LIKE "%Mattress"
-EXISTS <FILL_IN>.item_name LIKE "%Pillow"
+select items,
+EXISTS (items,it ->it.item_name LIKE "%Mattress") as mattress,
+EXISTS (items,it ->it.item_name LIKE "%Pillow") as pillow
+from sales;
 
 -- COMMAND ----------
 

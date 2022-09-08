@@ -319,7 +319,7 @@ def try_int(num_string):
 
 # COMMAND ----------
 
-try_int("2")
+try_int('a')
 
 # COMMAND ----------
 
@@ -571,7 +571,7 @@ def secure_query_function(query, preview=True):
 
 # COMMAND ----------
 
-secure_query_function(query)
+secure_query_function(injection_query)
 
 # COMMAND ----------
 
