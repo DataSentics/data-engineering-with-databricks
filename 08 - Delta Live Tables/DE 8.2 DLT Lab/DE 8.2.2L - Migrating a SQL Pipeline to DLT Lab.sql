@@ -118,12 +118,7 @@ AS SELECT
 -- COMMAND ----------
 
 -- TODO
-CREATE OR REFRESH STREAMING LIVE TABLE daily_patient_avg
-  COMMENT "AVG DAILY HEARTRATE"
-  AS SELECT mrn, name, MEAN(heartrate) avg_heartrate, DATE(time) `date`
-     from stream (live.recordings_enriched)
-     group by mrn, name, date
-  
+
 
 -- COMMAND ----------
 
