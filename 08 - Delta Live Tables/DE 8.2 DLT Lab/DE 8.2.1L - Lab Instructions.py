@@ -85,6 +85,15 @@ DA.print_pipeline_config()
 
 # COMMAND ----------
 
+DA.create_pipeline()
+
+# COMMAND ----------
+
+DA.start_pipeline()
+
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
