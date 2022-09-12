@@ -122,7 +122,7 @@ DA.generate_query()
 # COMMAND ----------
 
 # Replace FILL_IN with your partner's username
-DA.generate_confirmation_query("FILL_IN")
+DA.generate_confirmation_query("daniela-gabriela.vlasceanu@datasentics.com")
 
 # COMMAND ----------
 
@@ -164,7 +164,7 @@ DA.generate_derivative_view()
 # COMMAND ----------
 
 # Replace FILL_IN with your partner's username
-DA.generate_partner_view("FILL_IN")
+DA.generate_partner_view("daniela-gabriela.vlasceanu@datasentics.com")
 
 # COMMAND ----------
 
@@ -191,7 +191,7 @@ DA.generate_partner_view("FILL_IN")
 # COMMAND ----------
 
 # Replace FILL_IN with your partner's username
-DA.generate_delete_query("FILL_IN")
+DA.generate_delete_query("daniela-gabriela.vlasceanu@datasentics.com")
 
 # COMMAND ----------
 
