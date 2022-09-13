@@ -7,5 +7,15 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC **Your Answers**
+#1
+my_var = "Hello"
+print(f"{my_var}" World!)
+
+#2
+spark.sql("SELECT * FROM table")
+
+#3
+multi_line = """multi
+line
+string
+"""
