@@ -154,6 +154,11 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC select * from recordings_bronze_temp
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 

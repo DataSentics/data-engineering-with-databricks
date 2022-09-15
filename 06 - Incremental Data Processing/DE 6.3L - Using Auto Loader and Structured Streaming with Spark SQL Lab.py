@@ -94,7 +94,14 @@ assert spark.table("customers_raw_temp").dtypes ==  [('customer_id', 'string'),
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC 
+# MAGIC SELECT * FROM customers_raw_temp
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC -- TODO
+# MAGIC 
 # MAGIC 
 # MAGIC CREATE OR REPLACE TEMPORARY VIEW customer_count_by_state_temp AS
 # MAGIC SELECT state, count(customer_id) AS customer_count

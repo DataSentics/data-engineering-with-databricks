@@ -92,6 +92,11 @@ assert spark.table("bronze").dtypes ==  [('customer_id', 'string'), ('tax_id', '
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC select * from bronze_temp
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
@@ -139,7 +144,7 @@ assert spark.table("bronze_enhanced_temp").isStreaming, "Not a streaming table"
 silver_checkpoint_path = f"{DA.paths.checkpoints}/silver"
 
 query = (spark
-         .table("bronze_enhanced_temp")
+        .table("bronze_enhanced_temp")
          .writeStream
          .format("delta")
          .option("checkpointLocation", silver_checkpoint_path)
