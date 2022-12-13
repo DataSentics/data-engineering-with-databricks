@@ -11,7 +11,20 @@
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC **Your answers about DWH**
+# MAGIC * DWH is a place where data from various resources is stored and organized in order to be used for reporting and data analysis<br />
+# MAGIC * Data reporting and analysis
+# MAGIC * PROS:
+# MAGIC - speedy data retreiving
+# MAGIC - error identification and correction
+# MAGIC - easy integration
+# MAGIC * CONS:
+# MAGIC - time consuming preparation
+# MAGIC - costs
+# MAGIC - limited due confidential information
+# MAGIC * Data modeling approach: Data warehouse modeling is the process of designing and organizing your data models within your data warehouse platform. The design and organization process consists of setting up the appropriate databases and schemas so that the data can be transformed and then stored in a way that makes sense to the end user. There are three stages that can be applied:
+# MAGIC         - Base or staging models (deciding the type of timestamps to use, how to name date fields, whether to use camel or snake case for naming your columns and how to define primary keys)
+# MAGIC         - Intermediate models (speed up the time it takes for your data models to run and make it easier for analytics engineers to debug more complex models)
+# MAGIC         - Core models (produce a fully transformed dataset that can be used by data analysts and business stakeholders)
 
 # COMMAND ----------
 
@@ -27,7 +40,11 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Data Lake**
+# MAGIC * Data lake is a system of repository of data stored in its natural state, usually in bloob containers.
+# MAGIC * It can store structured, unstructured, and semistructured data to be used for BI, machine learning or analytics.
+# MAGIC * ADVANTAGES: it can store large amounts of data in a any kind of natural way they are created; it is scalable;
+# MAGIC * DISADVANTAGES: poor support for BI; difficult to navigate; lower query speed; hard to append data
+# MAGIC * Data Modeling Approach: ?????
 
 # COMMAND ----------
 
@@ -45,7 +62,13 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Data LakeHouse**
+# MAGIC * A data lakehouse can be defined as a modern data platform built from a combination of a data lake and a data warehouse.
+# MAGIC * Data Analytics and Machine Learning
+# MAGIC * ADVANTAGES: less administration, better data governance, increased cost-effectiveness
+# MAGIC * DISADVANTAGES: it can be more expensive to set up and maintain than lakes
+# MAGIC * ????? - to be studied further
+# MAGIC * Delta files provide the low storage cost and effectiveness of Parque files with the added governance of Delta Lake
+# MAGIC * ????? - to be studied further
 
 # COMMAND ----------
 
@@ -55,7 +78,10 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about problems with data**
+# MAGIC * Handling a Large Amount of Data
+# MAGIC * Keeping up with the real time data
+# MAGIC * Data Security
+# MAGIC * Shortage of skilled people
 
 # COMMAND ----------
 
@@ -69,7 +95,11 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about DBX architecture**
+# MAGIC The two main parts of Databricks are: Control Plane and Data Plane
+# MAGIC * Control Plane components: Web Applications, Repos/Notebooks, Job Scheduling, Cluster management
+# MAGIC * Data Plane components: Clusters, Data Storage
+# MAGIC * The two parts are managing separated aspects of the platform
+# MAGIC * ?????
 
 # COMMAND ----------
 
@@ -85,7 +115,14 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about clusters**
+# MAGIC * There are two types of clusters: all purpose clusters and job clusters
+# MAGIC * The all purpose clusters analyze data collaboratively using notebooks and are created via Workspace or API, the job clusters are created by the Databricks job scheduler and run automated jobs
+# MAGIC * The runtime in a cluster is specified at the time of creation or can be edited provided one has the appropriate permissions. A cluster restart is most likely necessary
+# MAGIC * The cluster configuration can be edited
+# MAGIC * done
+# MAGIC * When a cluster is terminated all cloud resources are deleted
+# MAGIC      <p />A cluster is restarted when cache is needed to be cleared or to completly reset the computing environment
+# MAGIC      <p />Delete will remove the cluster and its configuration
 
 # COMMAND ----------
 
@@ -101,7 +138,12 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Databricks UI**
+# MAGIC * DataScience&Engineering: is an analytics platform based on Apache Spark used by data engineers and data scientists for working with big data 
+# MAGIC * Sql: used to perform ad-hoc and exploratory data analysis on the data lake and quicly perform agile dashboard to test and validate buissness requirements
+# MAGIC * Machine Learning: used to manage machine learning flows and track all assets related to ML
+# MAGIC * ????? needs further study
+# MAGIC * ????? needs further study
+# MAGIC * ????? needs further study
 
 # COMMAND ----------
 
