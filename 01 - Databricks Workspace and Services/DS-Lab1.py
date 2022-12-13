@@ -11,7 +11,18 @@
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC **Your answers about DWH**
+# MAGIC - A DWH is a type of database/database architecture that stores structured data accumulated from multiple sources through (mostly) ETL processing
+# MAGIC - Data analysis, BI, reporting
+# MAGIC - The advantages of Data Warehouses:
+# MAGIC     - Easy to retrieve information
+# MAGIC     - Increased data security
+# MAGIC     - Standardization of data which leads to consistency and accuracy
+# MAGIC - The disadvantages of Data Warehouses:
+# MAGIC     - Rigidity/ does not support unstructured data
+# MAGIC     - Usually not cost effecitve (high maintenance)
+# MAGIC     - Limited support for ML
+# MAGIC     - Limited capacity for big data storage
+# MAGIC - Dimensional Modeling, most commonly Star Schema, a simple stype of schema often used in data warehousing
 
 # COMMAND ----------
 
@@ -27,7 +38,17 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Data Lake**
+# MAGIC - A Data Lake is a storage repository that holds large amounts of data in its raw format, including structured, semistructured and unstructured data
+# MAGIC - Machine Learning, Data Science, AI
+# MAGIC - Advantages of Data Lakes:
+# MAGIC     - Flexibility/ it can store any type of data
+# MAGIC     - Cost effective and scalable
+# MAGIC     - Supports ML
+# MAGIC - Disadvantages of Data Lakes:
+# MAGIC     - Data quality issues/ lack of data governance
+# MAGIC     - Security risks
+# MAGIC     - Poor support for BI and analytics
+# MAGIC - Data Vault approach?
 
 # COMMAND ----------
 
@@ -45,7 +66,21 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Data LakeHouse**
+# MAGIC - A Data Lakeshouse is a type of data architecture that provides both the data quality and security of DWHs and the flexibility and cost effectiveness of Data Lakes
+# MAGIC - Data Analytics and Machine Learning
+# MAGIC - Data Lakehouse advantages:
+# MAGIC     - Adds governance and reliability to Data Lakes
+# MAGIC     - Cost effective
+# MAGIC     - Unlimited storage capacity
+# MAGIC     - Supports ACID transactions
+# MAGIC     - Storage and compute are decoupled
+# MAGIC - Data Lakehouse disadvantages:
+# MAGIC     - Unnecesary for SQL only use cases
+# MAGIC     - Does not allow for some complex transformations found in DWH (checking foreign key integrity)
+# MAGIC - Star Schema, Data Vault
+# MAGIC - Delta files provide the low storage cost and effectiveness of Parque files with the added governance of Delta Lake
+# MAGIC - Through Delta Lake, Databricks adds the benefits of DWH to the Cloud Object Storage/ Data Lake
+# MAGIC     
 
 # COMMAND ----------
 
@@ -55,7 +90,10 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about problems with data**
+# MAGIC - Increasing volume
+# MAGIC - High velocity data
+# MAGIC - Difficulty in integrating different technologies
+# MAGIC - Difficulty in facilitating cooperation between data engineers, analysts and scientists
 
 # COMMAND ----------
 
@@ -69,7 +107,10 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about DBX architecture**
+# MAGIC - The first part of DBX arcitecture is the Cloud Based Data Lake
+# MAGIC - The second part of the DBX architecture is Delta Lake
+# MAGIC - the 1st provides storage capacity and the 2nd provides data management and governance
+# MAGIC - the 1st one is managed by the client while the 2nd one is managed by Databricks
 
 # COMMAND ----------
 
@@ -85,7 +126,16 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about clusters**
+# MAGIC - There are 2 types of clusters:
+# MAGIC     - All-purpose cluster
+# MAGIC     - Job cluster
+# MAGIC - All-purpose clusters are used for collaborative data analysis while job clusters are used to run automated jobs
+# MAGIC - When creating a cluster, you can select the desired runtime in the field: Databricks Runtime Version
+# MAGIC - 
+# MAGIC - They all start with the cluster termination event
+# MAGIC     - Terminating a cluster will delete all cloud resources currently in use, without losing the code
+# MAGIC     - Restarting will deploy a new set of cloud resources using the same configuration
+# MAGIC     - Deleting will stop the cluster and remove the cluster configuration as well
 
 # COMMAND ----------
 
@@ -101,7 +151,12 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Databricks UI**
+# MAGIC - The purpose of DataScience&Engineering tab is to enable collaboration between data engineers, data analysts and data scientists 
+# MAGIC - The purpose of SQL tab is to provide SQL analysts to perform Exploratory Data Analysis by querying data and creating visualisations  
+# MAGIC - The purpose of Machine Learning tab is to create an efficient and integrated ML environment
+# MAGIC - User Settings > Git Integration
+# MAGIC - 
+# MAGIC - 
 
 # COMMAND ----------
 
@@ -116,4 +171,8 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about notebooks**
+# MAGIC - Shift + Alt + Up/ Shift + Alt + Down
+# MAGIC - 
+# MAGIC - %python, %SQL, %scala
+# MAGIC - %run, %fs
+# MAGIC - display()
