@@ -98,7 +98,10 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about DBX architecture**
+# MAGIC - Control plane
+# MAGIC - Data plane
+# MAGIC - The control plane consists of the elements that sum up the Databricks platform (such as the web app itself, the notebooks, jobs and the cluster management), while the data plane consists of the "space" in which the data is processed (basically the cloud platform, such as Azure or AWS).
+# MAGIC - The control plane is managed by Databricks, while the data plane is controlled by the cloud platform
 
 # COMMAND ----------
 
@@ -114,7 +117,17 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about clusters**
+# MAGIC - There are all-purpose clusters and job clusters
+# MAGIC - All-purpose clusters are used to analyze data collaboratively using interactive notebooks, while job clusters are used to run fast and robust automated jobs.
+# MAGIC - Through the performance section in the cluster creation tab.
+# MAGIC - Restart the cluster
+# MAGIC - Check
+# MAGIC - Restarting cluster:
+# MAGIC   - This terminates and then starts the cluster again with its same settings, or different settings if changed.
+# MAGIC - Terminating cluster:
+# MAGIC   - This stops the cluster while keeping it available to turn on again with the configuration saved.
+# MAGIC - Deleting cluster:
+# MAGIC   - This terminates the cluster, and then removes it completely from the system.
 
 # COMMAND ----------
 
@@ -130,7 +143,12 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about Databricks UI**
+# MAGIC - Databricks Data Science & Engineering is the classic Databricks environment for collaboration among data scientists, data engineers, and data analysts.
+# MAGIC - Databricks SQL provides a simple experience for SQL users who want to run quick ad-hoc queries on their data lake, create multiple visualization types to explore query results from different perspectives, and build and share dashboards.
+# MAGIC - Databricks Machine Learning is an integrated end-to-end machine learning environment incorporating managed services for experiment tracking, model training, feature development and management, and feature and model serving.
+# MAGIC - In user settings -> GIT integration
+# MAGIC - In user settings -> notebook settings
+# MAGIC - In the admin console
 
 # COMMAND ----------
 
@@ -145,4 +163,8 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about notebooks**
+# MAGIC - Ctrl+Enter/Shift+Enter or by clicking on the button on the upper right part of the selected notebook cell.
+# MAGIC - By clicking on the cluster button in the upper right part of the page, and selecting the desired cluster. Clearing the state is usually used to "clean up" the notebook and run it again from the beginning. It can be accessed in the run tab.
+# MAGIC - By using the magic % command, or by clicking the language field in the upper right part of the notebook cell.
+# MAGIC - The magic commands can be used by writing % first thing in the cell. Some of them are %SQL, %python, %scala etc for different languages, %fs for file system commands. We can run a different notebook from within a notebook by using the %run magic command.
+# MAGIC - Not sure what the special functions are refering to
