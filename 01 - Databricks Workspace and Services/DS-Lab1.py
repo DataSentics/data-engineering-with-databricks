@@ -115,5 +115,9 @@
 
 # COMMAND ----------
 
+display(dbutils)
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC **Your answers about notebooks**

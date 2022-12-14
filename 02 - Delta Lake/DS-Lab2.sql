@@ -27,24 +27,48 @@
 
 -- Create the table here
 
+create table if not exists Company (name string, companyId int, income double)
+-- table exists; should have used create table if not exists, to avoid the error message
+
+-- COMMAND ----------
+
+describe detail Company;
+-- describe Company;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - table is managed (why ? because it is being created in the hive...?)
+-- MAGIC - delta is default, so no need to specify the format
+-- MAGIC - it is physically stored in the "dbfs:/user/hive/warehouse/company"; we can see that with `describe detail`
+-- MAGIC - (?) what storage it uses 
+-- MAGIC - (? how can we display the name...?) database used: the default one
+
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC ### Insert into the table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - What is a transaction? 
+-- MAGIC --<i>Any change done to a table (add/remove/update recs, schema change, table creation/deletion)<i>
 -- MAGIC - What does it mean commiting a transaction? 
+-- MAGIC --<i>changes are pushed into the table, and become visible when table is queried<i>
 -- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
 -- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
 -- MAGIC - What happens if the job fails midway?
+-- MAGIC --<i>Nothing. the transaction is not reflected in the table, data is not corrupted or anything<i>
 
 -- COMMAND ----------
 
--- INSERT 3 records in single transaction
+insert into Company values
+('John', 1, 123), ('Mark', 1, 145), ('Superman', 2, 999);
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+insert into Company values ('Zod', 2, 666);
+insert into Company values ('Zed', 3, 664);
+insert into Company values ('Zid', 2, 665);
 
 -- COMMAND ----------
 
@@ -53,14 +77,19 @@
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Query your delta table customers
 -- MAGIC - How would you query it if it were in a different database?
+-- MAGIC --<i>dbname.tabname.colname<i>
 -- MAGIC - How can you get older version of the table?
--- MAGIC - How does the versioning of delta tables work? What does it use? 
--- MAGIC - What does happen if someone is reading at the same time you are writing into the table? 
+-- MAGIC --<i>create or replace temporary view v_name as SELECT * from company VERSION as of vers_number<i>
+-- MAGIC - How does the versioning of delta tables work? What does it use?
+-- MAGIC --<i>transactions<i>
+-- MAGIC - What does happen if someone is reading at the same time you are writing into the table?
+-- MAGIC --<i>can't be exactly the same time; their query will either include or not my new transactions, depending on whether they are executed or not at the time of the query<i>
 -- MAGIC - How are concurent reads handled? What are the limitations?
+-- MAGIC ----<i>one by one, limited by the infrastructure...(?)<i>
 
 -- COMMAND ----------
 
--- Query/View your table here
+select * from company
 
 -- COMMAND ----------
 
@@ -77,6 +106,7 @@
 -- COMMAND ----------
 
 -- Update your table here
+
 
 -- COMMAND ----------
 
