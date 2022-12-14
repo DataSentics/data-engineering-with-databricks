@@ -101,7 +101,7 @@
 # MAGIC %md
 # MAGIC **Your answers about problems with data**
 # MAGIC 
-# MAGIC - 
+# MAGIC - Usualy revolve around their architecture, meaning that organizations' stacks are usually siloed (separated from each other) which in turn increases complexity around working with data, underlying technologies aren't usually harmonized, integration is difficult and productivity is extremly hindered when data teams are isolated from eachother. These data ecosystems are hard to manage and have a high maintenance cost.
 
 # COMMAND ----------
 
@@ -116,6 +116,25 @@
 
 # MAGIC %md
 # MAGIC **Your answers about DBX architecture**
+# MAGIC 
+# MAGIC - Control Plane and Data Plane
+# MAGIC 
+# MAGIC - Control Plane:
+# MAGIC   - Web App
+# MAGIC   - Notebooks
+# MAGIC   - Job scheduling
+# MAGIC   _ Cluster management
+# MAGIC   
+# MAGIC - Data Plane
+# MAGIC   - Compute resources
+# MAGIC   - Connections to data sources
+# MAGIC   - DBFS
+# MAGIC 
+# MAGIC - Differences
+# MAGIC   - The control plance represents the backend services for managing users, datasets and computing resources whereas the data plane is where all these resources reside
+# MAGIC 
+# MAGIC - Control Plane managed by DBX
+# MAGIC - Data plane managed by customer
 
 # COMMAND ----------
 
@@ -132,6 +151,21 @@
 
 # MAGIC %md
 # MAGIC **Your answers about clusters**
+# MAGIC 
+# MAGIC - All-purpose cluster and job clusters
+# MAGIC 
+# MAGIC - Differences:
+# MAGIC   - All-purpose clusters are used to analyze data colaboratively using notebooks and job clusters run automated tasks
+# MAGIC   
+# MAGIC - In the performance section of the compute menu
+# MAGIC 
+# MAGIC - You need to restart the cluster
+# MAGIC 
+# MAGIC - I tried, i'm not lying
+# MAGIC 
+# MAGIC - Restart: terminates the cluster and turns it back on
+# MAGIC - Terminate: is stops the instanced cluster
+# MAGIC - Delete: deletes the cluster along with its configs
 
 # COMMAND ----------
 
@@ -148,6 +182,18 @@
 
 # MAGIC %md
 # MAGIC **Your answers about Databricks UI**
+# MAGIC 
+# MAGIC - DataScience&Engineering: it serves the purpose of an environment for collaboration among data scientists, data engineers, and data analysts. Basically a general purpose environment
+# MAGIC 
+# MAGIC - SQL Tab is primarily used for SQL queries visualizations, dashboard etc.
+# MAGIC 
+# MAGIC - Machine Learning tab is a variant of the DataScience&Engineering env, specialized on experiment tracking, model training, feature development and management.
+# MAGIC 
+# MAGIC - Git integration tab in user settings
+# MAGIC 
+# MAGIC - user settings -> notebook settings
+# MAGIC 
+# MAGIC - admin console -> users
 
 # COMMAND ----------
 
@@ -163,3 +209,13 @@
 
 # MAGIC %md
 # MAGIC **Your answers about notebooks**
+# MAGIC 
+# MAGIC - ctrl + enter or run icon with options (above, below etc)
+# MAGIC 
+# MAGIC - top right part of notebook, clear state is in the run tab under the notebook_name, this means it resets the state of the notebook
+# MAGIC 
+# MAGIC - use the magic symbol % and the language of prefference
+# MAGIC 
+# MAGIC - %fs to acces the file system, %md for markdown cells, %run to run different notebooks within notebooks, the language selection commands etc.
+# MAGIC 
+# MAGIC - not entirely sure what databricks special functions are, maybe we could discuss it sometime
