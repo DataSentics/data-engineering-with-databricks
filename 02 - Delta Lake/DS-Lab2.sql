@@ -323,7 +323,7 @@ DESCRIBE DETAIL students
 -- MAGIC - Table students has 4 partitions. This number can be reduced by using the OPTIMIZE command.
 -- MAGIC - Storage location is "dbfs:/user/hive/warehouse/students/"
 -- MAGIC - Information found in the metadata above.
--- MAGIC - Partitioning in this case is happening due to a number of operations where only one or several records were modified, however this is not needed nor recommended for small to medium file sizes. We could use the PARTITION BY command to partition by certain criteria that we would want to apply.
+-- MAGIC - Partitioning is not used by default, this is not needed nor recommended for small to medium file sizes. We could use the PARTITIONED BY command to partition by certain criteria that we would want to apply.
 
 -- COMMAND ----------
 
