@@ -11,6 +11,26 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers about Delta Lake**
+-- MAGIC 
+-- MAGIC - Is an open source project which alows building a data lakehouse on top of storage systems, builds on standard formats, optimized for cloud object storage, built for scalable metadata
+-- MAGIC 
+-- MAGIC - Advantages
+-- MAGIC   - decouples compute and storage thus providing optimized performance
+-- MAGIC   - brings ACID transactions
+-- MAGIC   
+-- MAGIC - ACID provides transactional guarantees stands for: 
+-- MAGIC   - Atomicity(transactions either succed or fail completely, no middle ground)
+-- MAGIC   - Consistency(guarantee of how the state of the data is observed by simultaneous operations)
+-- MAGIC   - Isolation (refers to the conflict between simultaneous operations)
+-- MAGIC   - Durability(commited changes are permanent)
+-- MAGIC 
+-- MAGIC 
+-- MAGIC - It is not
+-- MAGIC   - proprietary tech (it is opens source for 3 years now)
+-- MAGIC   - storage format or medium
+-- MAGIC   - dbs service or dwh
+-- MAGIC 
+-- MAGIC - It is built on top of a standard big data format parquet
 
 -- COMMAND ----------
 
@@ -18,33 +38,45 @@
 -- MAGIC ### Create a Delta table Company 
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Columns: name as as string, companyId as Int, income as Double
--- MAGIC - Is this table managed or unmanaged?
--- MAGIC - Why do we not need to specify format?
--- MAGIC - Where is the table physicali stored? What storage and database it use?
+-- MAGIC - Is this table managed or unmanaged? - table is managed
+-- MAGIC - Why do we not need to specify format? - because it is by default delta format
+-- MAGIC - Where is the table physicali stored? What storage and database it use?  - dbfs:/user/hive/warehouse/company it is stored in clud object storage, database is default
 -- MAGIC - Make sure the cell creating the table can be run multiple times in a row
 
 -- COMMAND ----------
 
 -- Create the table here
+CREATE TABLE IF NOT EXISTS company
+(name STRING, companyId INT, income DOUBLE)
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED company
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC ### Insert into the table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
--- MAGIC - What is a transaction? 
--- MAGIC - What does it mean commiting a transaction? 
+-- MAGIC - What is a transaction? - a transaction is any operation that is treated as a single unit of work
+-- MAGIC - What does it mean commiting a transaction? - commiting a transaction means applying the result of a transaction
 -- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
 -- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
--- MAGIC - What happens if the job fails midway?
+-- MAGIC - What happens if the job fails midway? - because of the atomicity property of transcations, the job does not happen
 
 -- COMMAND ----------
 
 -- INSERT 3 records in single transaction
+INSERT INTO company VALUES
+("Obambama", 421, 1432.65),
+("POP-the-EYE", 632, 8865.45),
+("Hairy", 221, 1.99);
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+INSERT INTO company VALUES ("Armould", 666, 99.89);
+INSERT INTO company VALUES ("Sparkey", 837, 12.21);
 
 -- COMMAND ----------
 
@@ -52,15 +84,16 @@
 -- MAGIC ### Querying a Delta table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Query your delta table customers
--- MAGIC - How would you query it if it were in a different database?
--- MAGIC - How can you get older version of the table?
--- MAGIC - How does the versioning of delta tables work? What does it use? 
--- MAGIC - What does happen if someone is reading at the same time you are writing into the table? 
--- MAGIC - How are concurent reads handled? What are the limitations?
+-- MAGIC - How would you query it if it were in a different database? SELECT * from <catalog_name>.<schema_name>.<table_name>;
+-- MAGIC - How can you get older version of the table? describe hiustory of the table and then select from table as of version required
+-- MAGIC - How does the versioning of delta tables work? What does it use? - it saves a state of the table after each transaction
+-- MAGIC - What does happen if someone is reading at the same time you are writing into the table? -the reader continues to see a consistent view of the table
+-- MAGIC - How are concurent reads handled? What are the limitations? - any read against a table will always return the most recent version of the table, the limitations are only related to the limits of object storage on cloud vendors
 
 -- COMMAND ----------
 
 -- Query/View your table here
+SELECT * FROM company
 
 -- COMMAND ----------
 
@@ -68,15 +101,18 @@
 -- MAGIC ### Update your table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Update your table customers, change some names of the companies you inserted before
--- MAGIC - How many transactions has been triggered?
--- MAGIC - How is concurency when updating and reading handled?
--- MAGIC - After what time can you see the updated records in the table?
--- MAGIC - What happens if the job fails midway?
--- MAGIC - How does the versioning work? Has a new version been created or the existing one updated?
+-- MAGIC - How many transactions has been triggered? - only one transaction
+-- MAGIC - How is concurency when updating and reading handled? - table reads ca never conflict with ongoing operations
+-- MAGIC - After what time can you see the updated records in the table? - as soon as the transaction has ended
+-- MAGIC - What happens if the job fails midway? - the transaction does not happen
+-- MAGIC - How does the versioning work? Has a new version been created or the existing one updated? -a new version is created, with any transaction comes a new version
 
 -- COMMAND ----------
 
 -- Update your table here
+UPDATE company 
+SET name = "Hary"
+WHERE companyId = 221
 
 -- COMMAND ----------
 
@@ -84,14 +120,16 @@
 -- MAGIC ### Delete from your table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Delete 2 records from your table.
--- MAGIC - How many transactions has been triggered?
--- MAGIC - How is concurency when deleting and reading handled?
--- MAGIC - After what time the records are removed from the table?
--- MAGIC - How does the versioning work? Has a new version been created or the existing one updated?
+-- MAGIC - How many transactions has been triggered? - only one transaction
+-- MAGIC - How is concurency when deleting and reading handled? - any read against a table will always return the most recent version of the table
+-- MAGIC - After what time the records are removed from the table? - as soon as the transaction is complete
+-- MAGIC - How does the versioning work? Has a new version been created or the existing one updated? - a new version hase been created
 
 -- COMMAND ----------
 
 -- Delete your table here
+DELETE FROM company
+WHERE companyId IN (421, 632);
 
 -- COMMAND ----------
 
@@ -99,9 +137,9 @@
 -- MAGIC ### Merging into your Delta table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Merge the updates defined below based on type into the company table
--- MAGIC - What advantages does MERGE bring over doing the action in doing update, delete and insert separately?
--- MAGIC - What are the requirements on matching? 
--- MAGIC - What happens if the job fails midway?
+-- MAGIC - What advantages does MERGE bring over doing the action in doing update, delete and insert separately? - you basically do all the operations in only 1 transaction as opossed to 3 transaction which if one of them would fail, it would leave the data in an invalid state
+-- MAGIC - What are the requirements on matching? MERGE statements must have at least one field to match on, and each WHEN MATCHED or WHEN NOT MATCHED optional clause can have any number of additional conditional statements
+-- MAGIC - What happens if the job fails midway? - the merge does not happen, leaving the data in the state as it was before the transaction
 
 -- COMMAND ----------
 
@@ -115,6 +153,15 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+MERGE INTO company c
+USING updates u
+ON c.companyId = u.companyId
+WHEN MATCHED AND u.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND u.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND u.type = "insert" OR u.type = "update"
+  THEN INSERT *
 
 -- COMMAND ----------
 
@@ -122,13 +169,14 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- MAGIC ### Delete company table
 -- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
 -- MAGIC - Delete your company table
--- MAGIC - How does the delete statement behave when deleting managed and unmanaged tables? 
--- MAGIC - How many transactions have been triggered?
--- MAGIC - What happens if the job fails midway?
+-- MAGIC - How does the delete statement behave when deleting managed and unmanaged tables? - with managed tables you also delete the underlying data because metadata and data are managed by databricks as oposed to unmanaged ones
+-- MAGIC - How many transactions have been triggered? one transaction
+-- MAGIC - What happens if the job fails midway? - 
 
 -- COMMAND ----------
 
 -- Delete your table here
+-- DROP TABLE company
 
 -- COMMAND ----------
 
@@ -178,11 +226,11 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- MAGIC %md 
 -- MAGIC ### Explore students table
 -- MAGIC - Try to not consult the documentation
--- MAGIC - How can you explore the students table(metadata) what are the available commands to do so?
--- MAGIC - How many partitions does the table have, have can you change the number of partitions?
--- MAGIC - Where is the data physically located?
--- MAGIC - What further information can you find in metadata?
--- MAGIC - Describe how is partitioning handled on the underlying physical storage
+-- MAGIC - How can you explore the students table(metadata) what are the available commands to do so? - describe extended and describe detail
+-- MAGIC - How many partitions does the table have, have can you change the number of partitions? - the table is not partitioned, you can partition it with PARTIOTIONED BY (column_name)
+-- MAGIC - Where is the data physically located? dbfs:/user/hive/warehouse/students
+-- MAGIC - What further information can you find in metadata? -  all of the info is displayed after using the describe extended and describe detail
+-- MAGIC - Describe how is partitioning handled on the underlying physical storage - basically files are broken into smaller ones
 
 -- COMMAND ----------
 
@@ -198,12 +246,12 @@ DESCRIBE DETAIL students
 
 -- MAGIC %md
 -- MAGIC ### History of Delta Table
--- MAGIC - How can you see the history of the delta table?
--- MAGIC - How can you rollback to different version?
--- MAGIC - How is the history retained?
--- MAGIC - How long into the history can you go?
--- MAGIC - What cleans the history?
--- MAGIC - How can you change for how long the history is retained?
+-- MAGIC - How can you see the history of the delta table? - with the describe history table_name command
+-- MAGIC - How can you rollback to different version? - with the RESTORE TABLE command
+-- MAGIC - How is the history retained? - in chronological order of the transactions
+-- MAGIC - How long into the history can you go? - from to first history log that was saved, by default it's 30 days
+-- MAGIC - What cleans the history? log files are automatically cleaned up after checkpoints are written
+-- MAGIC - How can you change for how long the history is retained? by changing the delta.logRetentionDuration = "interval <interval>"
 
 -- COMMAND ----------
 
@@ -217,15 +265,16 @@ DESCRIBE DETAIL students
 
 -- MAGIC %md
 -- MAGIC ### OPTIMIZE command
--- MAGIC - What does this command do?
--- MAGIC - How it is usefull?
--- MAGIC - When it should be used?
--- MAGIC - What is the syntax of the command?
--- MAGIC - How often should the command run? 
+-- MAGIC - What does this command do? - the OPTIMIZE command allows you to combine files toward an optimal size by combining records and rewriting results
+-- MAGIC - How it is usefull? - having small files is not very efficient, as you need to open them before reading them
+-- MAGIC - When it should be used? when you want to improve the speed of read queries from a table
+-- MAGIC - What is the syntax of the command? - OPTIMIZE table_name
+-- MAGIC - How often should the command run? - everytime you update a table
 
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+OPTIMIZE students
 
 -- COMMAND ----------
 
