@@ -282,12 +282,12 @@ OPTIMIZE students
 
 -- MAGIC %md 
 -- MAGIC ### ZORDER command
--- MAGIC - What does this command do?
--- MAGIC - How it is usefull?
--- MAGIC - When it should be used?
--- MAGIC - What is the syntax of the command?
--- MAGIC - How often should the command run?
--- MAGIC - On which columns it should be used?
+-- MAGIC - What does this command do? -  speeds up data retrieval when filtering on provided fields by colocating data with similar values within data files
+-- MAGIC - How it is usefull? - it reduces the amount of data that need to be read, making reads on data much faster
+-- MAGIC - When it should be used? - when there are many operations done in regard to a given field
+-- MAGIC - What is the syntax of the command? ZORDER BY col_name
+-- MAGIC - How often should the command run? - the command is incremental but if no new data is added to a already z-ordered partition it makes no sense to z-order again
+-- MAGIC - On which columns it should be used? - only on the ones that are used often, for each added column to z-order the effectiveness locally drops
 -- MAGIC - How it can be switched to different column? 
 
 -- COMMAND ----------

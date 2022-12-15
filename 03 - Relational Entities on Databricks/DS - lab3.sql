@@ -10,6 +10,14 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC - A database is an organized collection of data, they contain tables, views and functions
+-- MAGIC 
+-- MAGIC - CREATE DATABASE IF NOT EXISTS db_name
+-- MAGIC 
+-- MAGIC - DESCRIBE DATABASE EXTENDED db_name
+-- MAGIC 
+-- MAGIC - DROP DATABASE db_name CASCADE
 
 -- COMMAND ----------
 
@@ -23,6 +31,12 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC - USE db_name; CREATE TABLE table_name with column specifications
+-- MAGIC 
+-- MAGIC - CREATE TABLE table_name AS SELECT ...
+-- MAGIC 
+-- MAGIC - The same way you create a managed table EXCEPT you specify an EXTERNAL LOCATION 
 
 -- COMMAND ----------
 
@@ -39,3 +53,15 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC - CREATE VIEW view_name AS ...
+-- MAGIC 
+-- MAGIC - CREATE TEMPORARY VIEW temp_view_name  AS ...
+-- MAGIC 
+-- MAGIC - Views persist upon session cancelation whereas temporary views do not
+-- MAGIC 
+-- MAGIC - You would create a Global temp view because they can be shared between notebooks using the same clusters
+-- MAGIC 
+-- MAGIC - SHOW TABLES show info about views aswell
+-- MAGIC 
+-- MAGIC - A view contains no data of its own, it is like a snapshot of a table in a given state

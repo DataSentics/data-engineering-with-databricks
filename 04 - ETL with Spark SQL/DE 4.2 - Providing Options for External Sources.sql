@@ -107,6 +107,10 @@ LOCATION "${da.paths.datasets}/ecommerce/raw/sales-csv"
 
 -- COMMAND ----------
 
+DESCRIBE EXTENDED sales_csv
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -121,6 +125,20 @@ SELECT * FROM sales_csv
 -- COMMAND ----------
 
 SELECT COUNT(*) FROM sales_csv
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED sales_csv
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC files = dbutils.fs.ls("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv")
+-- MAGIC display(files)
+
+-- COMMAND ----------
+
+-- SELECT * FROM csv.`dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/001.csv`
 
 -- COMMAND ----------
 
@@ -160,6 +178,12 @@ DESCRIBE EXTENDED sales_csv
 -- MAGIC       .write.mode("append")
 -- MAGIC       .format("csv")
 -- MAGIC       .save(f"{DA.paths.working_dir}/sales-csv"))
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC files = dbutils.fs.ls("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv")
+-- MAGIC display(files)
 
 -- COMMAND ----------
 
@@ -299,6 +323,22 @@ DESCRIBE EXTENDED users_jdbc
 -- MAGIC 
 -- MAGIC  
 -- MAGIC Run the following cell to delete the tables and files associated with this lesson.
+
+-- COMMAND ----------
+
+SHOW TABLES
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL users_jdbc
+
+-- COMMAND ----------
+
+select * from users_jdbc
+
+-- COMMAND ----------
+
+INSERT INTO users_jdbc VALUES ("asdasd", 1, "hsvdsbvsjbv")
 
 -- COMMAND ----------
 
