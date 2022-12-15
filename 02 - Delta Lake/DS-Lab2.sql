@@ -250,16 +250,18 @@ DESCRIBE DETAIL students
 -- MAGIC - How can you rollback to different version? - with the RESTORE TABLE command
 -- MAGIC - How is the history retained? - in chronological order of the transactions
 -- MAGIC - How long into the history can you go? - from to first history log that was saved, by default it's 30 days
--- MAGIC - What cleans the history? log files are automatically cleaned up after checkpoints are written
+-- MAGIC - What cleans the history? log files are automatically cleaned up after checkpoints are written, to do it manually you can use the VACUUM command
 -- MAGIC - How can you change for how long the history is retained? by changing the delta.logRetentionDuration = "interval <interval>"
 
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+DESCRIBE HISTORY students
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+RESTORE TABLE students TO VERSION AS OF 2
 
 -- COMMAND ----------
 
@@ -291,3 +293,5 @@ OPTIMIZE students
 -- COMMAND ----------
 
 -- Run the ZORDER command
+OPTIMIZE students
+ZORDER BY id
