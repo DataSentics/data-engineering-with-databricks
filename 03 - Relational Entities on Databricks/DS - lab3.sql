@@ -10,6 +10,10 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC 1. A collection of tables, and relationships among them; to be used for querying to generate reports, aggregates...
+-- MAGIC 2. `CREATE DATABASE IF NOT EXISTS`
+-- MAGIC 3. `DROP DATABASE CASCADE`
 
 -- COMMAND ----------
 
@@ -23,6 +27,10 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC 1. These are default in DBx; if no location is specified, or the default DBx location is specified when creating a table
+-- MAGIC 2. `CREATE TABLE tabname AS (SELECT * from existing_table)`
+-- MAGIC 3. By using data in an external location
 
 -- COMMAND ----------
 
@@ -39,3 +47,10 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC 1. `CREATE [or replace] VIEW view_name AS...`
+-- MAGIC 2. `CREATE **TEMPORARY** VIEW...`
+-- MAGIC 3. A view will be stored in the database, and can be accessed at any time; a temp view will not exist beyond the current session (dettach from cluster, re-open notebook); global temp view will be available till cluster termination or deletion
+-- MAGIC 4. A normal view; is visible to everyone who can access the database
+-- MAGIC 5. `SHOW TABLES` will also display the views; there is a column called isTemporary, true/false
+-- MAGIC 6. A view is the result of a query; running the view re-runs the query on the table; views can be used as flexible tools to query existing tables (which are not that flexible); is view is not *data*, but rather just the query code to be run + the result of the latest run; the view can aggregate and join data from multiple tables

@@ -11,6 +11,11 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers about Delta Lake**
+-- MAGIC 1. it is an open-source storage framework, which allows building Data Lakehouses (Lake+Warehouse benefits) on top of Data lakes, and integrates with an data processing engine (like Spark)
+-- MAGIC 2. ACID, transaction log/time-travel ability, scale-ability, open source, schema-enforcing to Data Lake
+-- MAGIC 3. Atomicity, Consistency, isolation, Durability: with Big Data, reads-writes happen with high freq, so to protect against data corruption, a transactions either fails completely or is succesfull, therefore reflected or not in the data, cannot fail mid-way through; all transactions must be consistent with the data structure/schema; transactions are processed one by one, independent of each other; and once a transaction is through, it is permanent (time-travel being exception)
+-- MAGIC 4. Delta Lake is not a storage resource, not a procssing engine, not a file format
+-- MAGIC 5. Parquet
 
 -- COMMAND ----------
 
@@ -27,36 +32,46 @@
 
 -- Create the table here
 
-create table if not exists Company (name string, companyId int, income double)
+create or replace table Company (name string, companyId int, income double)
 -- table exists; should have used create table if not exists, to avoid the error message
 
 -- COMMAND ----------
 
-describe detail Company;
 -- describe Company;
+describe table extended Company;
 
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC - table is managed (why ? because it is being created in the hive...?)
+-- MAGIC **Answers**
+-- MAGIC - table is managed (created in the default location)
 -- MAGIC - delta is default, so no need to specify the format
--- MAGIC - it is physically stored in the "dbfs:/user/hive/warehouse/company"; we can see that with `describe detail`
--- MAGIC - (?) what storage it uses 
--- MAGIC - (? how can we display the name...?) database used: the default one
+-- MAGIC - it is physically stored in the "dbfs:/user/hive/warehouse/company"; we can see that with `describe detail` or `describe extended`
+-- MAGIC - DBx default storage, database `default` 
+-- MAGIC - using `create table if not exists` to avoid overwrite, but also to ensure no error
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC ### Insert into the table
--- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
--- MAGIC - What is a transaction? 
--- MAGIC --<i>Any change done to a table (add/remove/update recs, schema change, table creation/deletion)<i>
--- MAGIC - What does it mean commiting a transaction? 
--- MAGIC --<i>changes are pushed into the table, and become visible when table is queried<i>
--- MAGIC - Insert into the table 3 records in one transaction, values of the records you can make up
--- MAGIC - Insert into the table 2 records each one in a single transaction, values of the records you can make up
--- MAGIC - What happens if the job fails midway?
--- MAGIC --<i>Nothing. the transaction is not reflected in the table, data is not corrupted or anything<i>
+-- MAGIC 1. Try to write the query without consulting documentation, SQL syntax is important for certification
+-- MAGIC 2. What is a transaction? 
+-- MAGIC 3. What does it mean commiting a transaction? 
+-- MAGIC 4. Insert into the table 3 records in one transaction, values of the records you can make up
+-- MAGIC 5. Insert into the table 2 records each one in a single transaction, values of the records you can make up
+-- MAGIC 6. What happens if the job fails midway?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 2. Any change done to a table (add/remove/update recs, schema change, table creation/deletion)
+-- MAGIC 
+-- MAGIC 3. changes are pushed into the table, and become visible when table is queried
+-- MAGIC 4. 
+-- MAGIC 5. 
+-- MAGIC 6. Nothing. the transaction is not reflected in the table, data is not corrupted or anything
 
 -- COMMAND ----------
 
@@ -81,7 +96,7 @@ insert into Company values ('Zid', 2, 665);
 -- MAGIC - How can you get older version of the table?
 -- MAGIC --<i>create or replace temporary view v_name as SELECT * from company VERSION as of vers_number<i>
 -- MAGIC - How does the versioning of delta tables work? What does it use?
--- MAGIC --<i>transactions<i>
+-- MAGIC --<i>transactions<i>; for each transaction, a new version is being created
 -- MAGIC - What does happen if someone is reading at the same time you are writing into the table?
 -- MAGIC --<i>can't be exactly the same time; their query will either include or not my new transactions, depending on whether they are executed or not at the time of the query<i>
 -- MAGIC - How are concurent reads handled? What are the limitations?
@@ -95,18 +110,34 @@ select * from company
 
 -- MAGIC %md
 -- MAGIC ### Update your table
--- MAGIC - Try to write the query without consulting documentation, SQL syntax is important for certification
--- MAGIC - Update your table customers, change some names of the companies you inserted before
--- MAGIC - How many transactions has been triggered?
--- MAGIC - How is concurency when updating and reading handled?
--- MAGIC - After what time can you see the updated records in the table?
--- MAGIC - What happens if the job fails midway?
--- MAGIC - How does the versioning work? Has a new version been created or the existing one updated?
+-- MAGIC 0. Try to write the query without consulting documentation, SQL syntax is important for certification
+-- MAGIC 0. Update your table customers, change some names of the companies you inserted before
+-- MAGIC 0. How many transactions has been triggered?
+-- MAGIC 0. How is concurency when updating and reading handled?
+-- MAGIC 0. After what time can you see the updated records in the table?
+-- MAGIC 0. What happens if the job fails midway?
+-- MAGIC 0. How does the versioning work? Has a new version been created or the existing one updated?
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 2. 1 transaction (version) for 3 updated records ?
+-- MAGIC 3. reading the data, updating, writing
+-- MAGIC 4. Instantly
+-- MAGIC 5. Nothing, the transaction is not reflected in the table
+-- MAGIC 6. if a transaction is succsesful, then a new version is created and the transaction is refelcted in the log; a new version only reflects the changes, it is not a new copy of the whole data
+-- MAGIC - it created a new version
 
 -- COMMAND ----------
 
 -- Update your table here
 
+UPDATE company
+SET companyId = 669
+WHERE income between 600 and 665;
+DESCRIBE HISTORY company;
 
 -- COMMAND ----------
 
@@ -121,7 +152,28 @@ select * from company
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 3. One transaction for each DELETE command, regardless of how many records are deleted on each command;
+-- MAGIC 4. Transaction by transaction: 2 records are deleted at the same time, commited, then moves to the next transaction, which uses the output of the previous transaction as input
+-- MAGIC 5. Instantly
+-- MAGIC 6. One new version is created for each transaction
+
+-- COMMAND ----------
+
 -- Delete your table here
+DELETE FROM company
+WHERE companyID = 1;
+delete FROM company 
+WHERE name = 'Zod';
+
+SELECT* from company;
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY company;
 
 -- COMMAND ----------
 
@@ -135,6 +187,16 @@ select * from company
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 3. `MERGE` can do updates, deletes, inserts in a single transaction, thus one read-write (not several)
+-- MAGIC 4. the condition specified at `ON` to be true, then we have the possibility to branch out on MATCHED and NOT MATCHED, with optional additional conditions
+-- MAGIC 5. None of the changes are performed (the whole transaction fails)
+
+-- COMMAND ----------
+
 -- Updates to merge into company table
 CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES 
   ("Omar", 13, 24.5, "update"),
@@ -145,6 +207,17 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+MERGE into company as c
+using updates as u
+on c.name = u.name
+when MATCHED and u.type = 'update'
+  THEN UPDATE SET *
+when MATCHED and u.type = 'delete'
+  then DELETE
+when not matched and u.type = 'insert'
+  then insert *;
+
+SELECT * from company;
 
 -- COMMAND ----------
 
@@ -158,7 +231,22 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 3. Managed tables: deletes data and metadata; for un-managed tables: only metadata and the hive connection is removed; the data stays in place
+-- MAGIC 4. Not sure :). `DESCRIBE HOSTORY` resulted in an error; I guess 1 transaction. TBC
+-- MAGIC 5. if job fails midway, the table stays in place, no new changes, no new version
+
+-- COMMAND ----------
+
 -- Delete your table here
+DROP table Company;
+
+-- COMMAND ----------
+
+-- describe history company;
 
 -- COMMAND ----------
 
@@ -167,8 +255,8 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
-CREATE TABLE students
-  (id INT, name STRING, value DOUBLE);
+CREATE or REPLACE TABLE students 
+  (id INT, name STRING, value DOUBLE) PARTITIONED BY (id);
   
 INSERT INTO students VALUES (1, "Yve", 1.0);
 INSERT INTO students VALUES (2, "Omar", 2.5);
@@ -209,10 +297,22 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- MAGIC ### Explore students table
 -- MAGIC - Try to not consult the documentation
 -- MAGIC - How can you explore the students table(metadata) what are the available commands to do so?
--- MAGIC - How many partitions does the table have, have can you change the number of partitions?
+-- MAGIC - How many partitions does the table how, have can you change the number of partitions?
 -- MAGIC - Where is the data physically located?
 -- MAGIC - What further information can you find in metadata?
 -- MAGIC - Describe how is partitioning handled on the underlying physical storage
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 2. `DESCRIBE`, `EXTENDED` `DETAIL`
+-- MAGIC 3. The table is not partitioned, so I guess 1 partition; No Idea how we can change that (?????????????)
+-- MAGIC 4. According to `describe detail`: "dbfs:/user/hive/warehouse/students"
+-- MAGIC 5. schema details, database name, number of parquet files (and their location and delta log if applicable), table format, managed or not
+-- MAGIC 6. A folder is created for each value of the partition variable
 
 -- COMMAND ----------
 
@@ -223,6 +323,17 @@ DESCRIBE EXTENDED students
 
 -- Write the second option to explore the students table in depth
 DESCRIBE DETAIL students
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY students
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC 
+-- MAGIC display(dbutils.fs.ls('dbfs:/user/hive/warehouse/students/id=1/'))
+-- MAGIC display(dbutils.fs.ls('dbfs:/user/hive/warehouse/students/'))
 
 -- COMMAND ----------
 
@@ -237,11 +348,26 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
--- Run the command to see history of students table
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answeers**
+-- MAGIC 
+-- MAGIC 1. `DESCRIBE HISTORY`
+-- MAGIC 3. Per transaction
+-- MAGIC 4. Until it has been vacuumed, or table Droped and recreated; `CREATE OR REPLACE` does not reset history
+-- MAGIC 5. `VACUUM` or `DROP TABLE`
+-- MAGIC 6. `VACUUM` with `RETAIN x HOURS`
 
 -- COMMAND ----------
 
--- Roll back to different vesrion in the history of stundets table
+-- Run the command to see history of students table
+DESCRIBE HISTORY students
+
+-- COMMAND ----------
+
+-- Roll back to different vesrion in the history of students table
+
+RESTORE TABLE students to VERsion AS OF 5
 
 -- COMMAND ----------
 
@@ -256,6 +382,7 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+OPTIMIZE students;
 
 -- COMMAND ----------
 
@@ -271,4 +398,23 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
+-- MAGIC %md
+-- MAGIC 
+-- MAGIC **Answers**
+-- MAGIC 
+-- MAGIC 1. creates some metadata on the multiple files, to make data read faster, because spark will know which ranges of each ZORDER variable can be found in each file
+-- MAGIC 2. Faster data reads, when reading is based on the ZORDER variable
+-- MAGIC 3. To be used when we expect a lot of reads to be based on that variable (not clear about the relationship with PARTITION ???????????)
+-- MAGIC 5. This is an expensive operation, so use carefully, and not during peak times; it rewrites the data
+-- MAGIC 6. Columns whih high cardinality
+-- MAGIC 7. Run the command again
+
+-- COMMAND ----------
+
 -- Run the ZORDER command
+optimize students
+zorder by name
+
+-- COMMAND ----------
+
+DROp TABLE Students

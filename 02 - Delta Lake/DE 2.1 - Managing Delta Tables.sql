@@ -59,7 +59,7 @@
 -- COMMAND ----------
 
 CREATE TABLE students
-  (id INT, name STRING, value DOUBLE);
+  (id INT, name STRING, value DOUBLE, value2 );
 
 -- COMMAND ----------
 
