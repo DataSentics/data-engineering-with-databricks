@@ -316,6 +316,10 @@ DESCRIBE EXTENDED users_pii
 
 -- COMMAND ----------
 
+DROP TABLE users_pii
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 

@@ -139,6 +139,78 @@ DESCRIBE EXTENDED sales_csv
 
 -- COMMAND ----------
 
+DROP TABLE testing_csv0
+
+-- COMMAND ----------
+
+CREATE TABLE testing_csv0
+(order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
+USING CSV
+OPTIONS (
+  header = "true",
+  delimiter = "|"
+)
+LOCATION 'dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/000.csv'
+
+-- COMMAND ----------
+
+SELECT COUNT(*) FROM testing_csv3
+
+-- COMMAND ----------
+
+SELECT * FROM testing_csv0
+
+-- COMMAND ----------
+
+CREATE TABLE testing_csv1
+(order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
+USING CSV
+OPTIONS (
+  header = "true",
+  delimiter = "|"
+)
+LOCATION 'dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/001.csv'
+
+
+
+-- SELECT * FROM csv.`dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/001.csv`
+
+-- COMMAND ----------
+
+SELECT * FROM testing_csv1
+
+-- COMMAND ----------
+
+CREATE TABLE testing_csv2
+(order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
+USING CSV
+OPTIONS (
+  header = "true",
+  delimiter = "|"
+)
+LOCATION 'dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/002.csv'
+
+-- COMMAND ----------
+
+SELECT * FROM testing_csv2
+
+-- COMMAND ----------
+
+CREATE TABLE testing_csv3
+(order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
+USING CSV
+OPTIONS (
+  header = "true",
+  delimiter = "|"
+)
+LOCATION 'dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/003.csv'
+
+-- COMMAND ----------
+
+SELECT * FROM testing_csv3
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -159,7 +231,7 @@ DESCRIBE EXTENDED sales_csv
 -- MAGIC       .table("sales_csv")
 -- MAGIC       .write.mode("append")
 -- MAGIC       .format("csv")
--- MAGIC       .save(f"{DA.paths.working_dir}/sales-csv"))
+-- MAGIC       .save("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/sales_csv"))
 
 -- COMMAND ----------
 
