@@ -8,8 +8,19 @@
 
 -- COMMAND ----------
 
+DESCRIBE EXTENDED students
+
+-- COMMAND ----------
+
+CREATE DATABASE IF NOT EXISTS default
+
+-- COMMAND ----------
+
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - A database is an organized collection of structured information, or data, typically stored electronically in a computer system/in the cloud.
+-- MAGIC - CREATE DATABASE IF NOT EXISTS customers
+-- MAGIC - DESCRIBE EXTENDED DATABASE [database]
+-- MAGIC - DROP DATABASE [database] CASCADE
 
 -- COMMAND ----------
 
@@ -22,7 +33,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - By creating the table in an internal location, it will be managed. If in an external location, it will be unmanaged.
+-- MAGIC - CREATE TABLE [table_copy] AS SELECT * FROM [initial_table]
+-- MAGIC - By specifying an external location when creating the table:
+-- MAGIC   - CREATE TABLE [table_name] LOCATION [/external_location]
 
 -- COMMAND ----------
 
@@ -37,5 +51,16 @@
 
 -- COMMAND ----------
 
+CREATE VIEW [view_name] AS
+SELECT * FROM [table_name];
+
+CREATE TEMPORARY VIEW [view_name] AS
+SELECT * FROM [table_name];
+
+-- COMMAND ----------
+
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - A view will be stored wherever specified, while a temporary view is visible only to the session that created it and will be dropped when the session ends.
+-- MAGIC - We could either create a normal view stored in a database that is accessible by others, or if we wish to create a temporary one, we should create a global temporary view, which can be seen by all the users that share the computing resources.
+-- MAGIC - SHOW TABLES
+-- MAGIC - A table contains actual data, while a view is just a saved query applied on an actual table.
