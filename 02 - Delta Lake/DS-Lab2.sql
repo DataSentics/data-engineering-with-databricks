@@ -10,7 +10,14 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers about Delta Lake**
+-- MAGIC * Delta Lake is an open source technology that enables building a data lakehouse on top of existing storage systems
+-- MAGIC * Delta lake:
+-- MAGIC      - builds on standard data formats
+-- MAGIC      - is optimized for cloud storage
+-- MAGIC      - is build for scalable metadata handling
+-- MAGIC * Atomicity, Consistency, Isolation, Durability. ACID's purpose is to make sure transactions are fulfilled succesfully and no data is lost in the process.
+-- MAGIC * ?????
+-- MAGIC * Parquet
 
 -- COMMAND ----------
 
@@ -25,7 +32,16 @@
 
 -- COMMAND ----------
 
--- Create the table here
+create or replace table company (name string, companyId int, income double);
+describe detail company
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC * The table is managed because it is created in the default location
+-- MAGIC * specify format ??????
+-- MAGIC * The table is stored in the hive at: dbfs:/user/hive/warehouse/company
+-- MAGIC * The table uses the default.company database; storage ?????
 
 -- COMMAND ----------
 
@@ -40,11 +56,22 @@
 
 -- COMMAND ----------
 
--- INSERT 3 records in single transaction
+-- MAGIC %md
+-- MAGIC * A transaction is a single or consecutive set of processes completed in a rational definite flow that can be performed manually or by creating an automatic database programming (a single unit of work applied to the database)
+-- MAGIC * Committing a transaction means making permanent changes within the transaction by SQL statements
+-- MAGIC * If a job fails midway the transaction fails and no changes are aplied.
 
 -- COMMAND ----------
 
--- INSERT 2 records each in a different transaction
+insert into company values
+("CompanyA", 1, 200000),
+("CompanyB", 2, 256000),
+("CompanyC", 3, 332000)
+
+-- COMMAND ----------
+
+insert into company values ("CompanyD", 4, 850655);
+insert into company values ("CompanyE", 5, 543000);
 
 -- COMMAND ----------
 
@@ -60,7 +87,20 @@
 
 -- COMMAND ----------
 
--- Query/View your table here
+-- MAGIC %md
+-- MAGIC * For a different database we first use comand USE name_of_other_database and then the query statement
+-- MAGIC * getting an older version: table_name version as of number_of the_version (or timestamp of the version)
+-- MAGIC * The versioning of the deltatables use a file to store the changes made
+-- MAGIC * ??????????
+-- MAGIC * ??????????
+
+-- COMMAND ----------
+
+select * from company
+
+-- COMMAND ----------
+
+describe history company
 
 -- COMMAND ----------
 
@@ -76,7 +116,15 @@
 
 -- COMMAND ----------
 
--- Update your table here
+update company
+set name = "Boss ... Hugo Boss"
+where companyId=4
+
+-- triggred one transaction
+-- ?????? concurency
+-- imediately
+-- if a job fails midway the transaction is considered unsuccessful and the changes are not commited
+-- a new version was created with each transaction. The changes made to the table for each version are kept in a file
 
 -- COMMAND ----------
 
@@ -91,7 +139,12 @@
 
 -- COMMAND ----------
 
--- Delete your table here
+delete from company
+where name='Boss ... Hugo Boss'
+--one transaction was triggered
+-- ??????
+-- the records are removed from the table as soon as the transaction is deemed successful
+-- a new version was created
 
 -- COMMAND ----------
 
@@ -110,11 +163,23 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
   ("Omar", 13, 24.5, "update"),
   ("", 8, 12.3, "delete"),
   ("Blue", 7, 123.5, "insert"),
-  ("Diya", 15, 43.2, "update");
+  ("Diya", 15, 43.2, "update")
+  
+  -- merging performs all the actions in one transaction while the separate update, delete, and insert actions bring each their own ACID requirements for each transaction
+  -- ??????
 
 -- COMMAND ----------
 
--- Merge the above updates into company table here
+merge into company
+using updates
+on company.name=updates.name
+when matched and updates.type = "update"
+then update set *
+when matched and updates.type = 'delete'
+then delete
+when not matched and updates.type = 'insert'
+then insert *;
+select * from company
 
 -- COMMAND ----------
 
@@ -128,7 +193,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
--- Delete your table here
+drop table company
 
 -- COMMAND ----------
 
@@ -137,7 +202,7 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
-CREATE TABLE students
+CREATE TABLE IF NOT EXISTS students
   (id INT, name STRING, value DOUBLE);
   
 INSERT INTO students VALUES (1, "Yve", 1.0);
@@ -173,6 +238,8 @@ WHEN MATCHED AND u.type = "delete"
 WHEN NOT MATCHED AND u.type = "insert"
   THEN INSERT *;
 
+select * from students
+
 -- COMMAND ----------
 
 -- MAGIC %md 
@@ -207,11 +274,11 @@ DESCRIBE DETAIL students
 
 -- COMMAND ----------
 
--- Run the command to see history of students table
+describe history students
 
 -- COMMAND ----------
 
--- Roll back to different vesrion in the history of stundets table
+restore table students to version as of 12
 
 -- COMMAND ----------
 
