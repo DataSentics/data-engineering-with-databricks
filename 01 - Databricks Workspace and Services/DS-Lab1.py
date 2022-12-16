@@ -68,7 +68,7 @@
 # MAGIC * DISADVANTAGES: it can be more expensive to set up and maintain than lakes
 # MAGIC * ????? - to be studied further
 # MAGIC * Delta files provide the low storage cost and effectiveness of Parque files with the added governance of Delta Lake
-# MAGIC * ????? - to be studied further
+# MAGIC * The Databricks Lakehouse takes the best from both worlds (data warehouses, data lakes) and combines them into a platform where specialists in different areas can work collaboratively with big data.
 
 # COMMAND ----------
 
@@ -99,7 +99,7 @@
 # MAGIC * Control Plane components: Web Applications, Repos/Notebooks, Job Scheduling, Cluster management
 # MAGIC * Data Plane components: Clusters, Data Storage
 # MAGIC * The two parts are managing separated aspects of the platform
-# MAGIC * ?????
+# MAGIC * The Control Plane is managed by Databricks and the Data Plane is managed by the costumer
 
 # COMMAND ----------
 
@@ -138,12 +138,12 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC * DataScience&Engineering: is an analytics platform based on Apache Spark used by data engineers and data scientists for working with big data 
+# MAGIC * DataScience&Engineering: is a services offered by Databricks, based on Apache Spark, used by data engineers and data scientists for working with big data 
 # MAGIC * Sql: used to perform ad-hoc and exploratory data analysis on the data lake and quicly perform agile dashboard to test and validate buissness requirements
 # MAGIC * Machine Learning: used to manage machine learning flows and track all assets related to ML
-# MAGIC * ????? needs further study
-# MAGIC * ????? needs further study
-# MAGIC * ????? needs further study
+# MAGIC * user settings -> git integration
+# MAGIC * user settings -> notebook settings
+# MAGIC * admin console -> users
 
 # COMMAND ----------
 
@@ -158,4 +158,9 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers about notebooks**
+# MAGIC * To run a cell: Ctrl+Return, To run all cells above/below: Run option in the bar menu and click on the desired option, To Run All click the Run all buton in the upper right corner of the notebook
+# MAGIC * To attach a cluster click on the Connect button in the upper right corner of the notebook and select the desired cluster. Click attach cluster.
+# MAGIC * Dettach cluster. When the cluster is reattached the notebook will reinitialize with a clear state
+# MAGIC * ?????
+# MAGIC * %Python, %sql, %scala, %run
+# MAGIC * dbutils
