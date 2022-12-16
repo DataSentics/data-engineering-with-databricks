@@ -8,8 +8,16 @@
 
 -- COMMAND ----------
 
+create database if not exists customers;
+describe schema customers
+
+-- COMMAND ----------
+
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * A database is information that is set up for easy access, management and updating.
+-- MAGIC * `create database if not exists customers`
+-- MAGIC * `describe schema customers`
+-- MAGIC * `DROP DATABASE customers CASCADE`
 
 -- COMMAND ----------
 
@@ -22,7 +30,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * They are default in Dbx ant the location is placed in the hive
+-- MAGIC * `CREATE TABLE table_name AS (SELECT * FROM the_other_table`)
+-- MAGIC * The unmanaged table is creating by specifying a location at the time of creation
 
 -- COMMAND ----------
 
@@ -38,4 +48,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * `CREATE VIEW view_name`
+-- MAGIC * `CREATE TEMPORARY VIEW temporary_view_name`
+-- MAGIC * A view will be stored in the database, and can be accessed at any time; a temp view will not exist beyond the current session (dettach from cluster, re-open notebook); global temp view will be available till cluster termination or deletion
+-- MAGIC * a view that is available across multiple sessions and users
+-- MAGIC * `SHOW TABLES`
+-- MAGIC * A table consists in rows and columns to store and organized data in a structured format, while a view is a result set of SQL statements. A view is a virtual table extracted from a database.
