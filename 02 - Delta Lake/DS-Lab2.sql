@@ -16,7 +16,10 @@
 -- MAGIC      - is optimized for cloud storage
 -- MAGIC      - is build for scalable metadata handling
 -- MAGIC * Atomicity, Consistency, Isolation, Durability. ACID's purpose is to make sure transactions are fulfilled succesfully and no data is lost in the process.
--- MAGIC * ?????
+-- MAGIC * It is not
+-- MAGIC       - proprietary tech (it is opens source for 3 years now)
+-- MAGIC       - storage format or medium
+-- MAGIC       - dbs service or dwh
 -- MAGIC * Parquet
 
 -- COMMAND ----------
@@ -39,7 +42,7 @@ describe detail company
 
 -- MAGIC %md
 -- MAGIC * The table is managed because it is created in the default location
--- MAGIC * specify format ??????
+-- MAGIC * The default format is Delta
 -- MAGIC * The table is stored in the hive at: dbfs:/user/hive/warehouse/company
 -- MAGIC * The table uses the default.company database; storage ?????
 
