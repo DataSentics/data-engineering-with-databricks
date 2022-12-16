@@ -85,11 +85,26 @@
 -- COMMAND ----------
 
 -- TODO
-CREATE OR REPLACE VIEW events_pivot
-<FILL_IN>
+CREATE OR REPLACE VIEW events_pivot as 
+select * from (
+select user_id user, event_name
+from events
+);
+select * from events_pivot
+sort by user
+
+-- COMMAND ----------
+
+CREATE OR REPLACE VIEW events_pivot as 
+select * from (
+select user_id user, event_name
+from events
+)
+pivot (count(*) for event_name in 
 ("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
 "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
-"cc_info", "foam", "reviews", "original", "delivery", "premium")
+"cc_info", "foam", "reviews", "original", "delivery", "premium"));
+select * from events_pivot
 
 -- COMMAND ----------
 
@@ -159,7 +174,9 @@ CREATE OR REPLACE VIEW events_pivot
 
 -- TODO
 CREATE OR REPLACE VIEW clickpaths AS
-<FILL_IN>
+select * from events_pivot
+join transactions
+on events_pivot.user = transactions.user_id
 
 -- COMMAND ----------
 
@@ -196,11 +213,16 @@ CREATE OR REPLACE VIEW clickpaths AS
 
 -- COMMAND ----------
 
+select * from sales
+
+-- COMMAND ----------
+
 -- TODO
 CREATE OR REPLACE TABLE sales_product_flags AS
-<FILL_IN>
-EXISTS <FILL_IN>.item_name LIKE "%Mattress"
-EXISTS <FILL_IN>.item_name LIKE "%Pillow"
+select items, 
+EXISTS (items, i -> i.item_name LIKE "%Mattress") as mattress, 
+EXISTS (items, i -> i.item_name LIKE "%Pillow") as pillow
+from sales
 
 -- COMMAND ----------
 
