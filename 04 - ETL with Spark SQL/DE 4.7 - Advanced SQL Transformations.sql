@@ -160,8 +160,13 @@ WHERE ecommerce.purchase_revenue_in_usd IS NOT NULL
 
 -- COMMAND ----------
 
+CREATE TABLE explode_test AS
 SELECT user_id, event_timestamp, event_name, explode(items) AS item 
 FROM events
+
+-- COMMAND ----------
+
+SELECT user_id, item FROM explode_test
 
 -- COMMAND ----------
 
@@ -196,6 +201,10 @@ GROUP BY user_id
 -- MAGIC Spark SQL supports standard join operations (inner, outer, left, right, anti, cross, semi).
 -- MAGIC 
 -- MAGIC Here we chain a join with a lookup table to an **`explode`** operation to grab the standard printed item name.
+
+-- COMMAND ----------
+
+SELECT *, explode(items) AS item FROM sales
 
 -- COMMAND ----------
 

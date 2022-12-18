@@ -85,6 +85,14 @@ DESCRIBE HISTORY events
 
 -- COMMAND ----------
 
+SELECT * FROM sales
+
+-- COMMAND ----------
+
+SELECT COUNT(*) FROM sales
+
+-- COMMAND ----------
+
 INSERT OVERWRITE sales
 SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical/`
 
@@ -165,6 +173,10 @@ SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-30m`
 CREATE OR REPLACE TEMP VIEW users_update AS 
 SELECT *, current_timestamp() AS updated 
 FROM parquet.`${da.paths.datasets}/ecommerce/raw/users-30m`
+
+-- COMMAND ----------
+
+SELECT * FROM users_update
 
 -- COMMAND ----------
 

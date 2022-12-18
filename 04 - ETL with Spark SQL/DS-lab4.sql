@@ -10,7 +10,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - Parquet, json
+-- MAGIC - CSV style formats
+-- MAGIC - SELECT * FROM JSON.path
+-- MAGIC - Yes, if the files in the directory have the same schema. In this case we only specify the directory, not the specific files in that directory.
 
 -- COMMAND ----------
 
@@ -22,7 +25,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC Because it's not within Delta Lake, the chache is not refreshed. Need to use REFRESH TABLE table_name
 
 -- COMMAND ----------
 
@@ -38,7 +41,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - It means CREATE TABLE table_name AS SELECT - creates a delta table based on another table.
+-- MAGIC - Doesn't support schemas. Best to be used on parquet/json files.
+-- MAGIC - CREATE TABLE companies AS SELECT * FROM parquet.`/files/raw/companies.csv`.
+-- MAGIC - A generated column is a column generated from querying a specific table.
+-- MAGIC - Quality assurance. The type of constraints that can be used in databricks are CHECK and NOT NULL.
+-- MAGIC - The two possibilities are DEEP CLONE and SHALLOW CLONE. While the deep clone actually copies the data, the shallow clone only reffers to the source as a "snapshot".
 
 -- COMMAND ----------
 
@@ -51,7 +59,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - Instead of deleting and creating a new table, he should use the command CREATE OR REPLACE TABLE. This uses less computing power - it's quicker and more effective. This also stores the version history of the table, which is good for backup purposes.
+-- MAGIC - CREATE OR REPLACE TABLE table_name AS SELECT ...
+-- MAGIC - CREATE OR REPLACE TABLE table_name
 
 -- COMMAND ----------
 
@@ -64,7 +74,13 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC - SELECT count(name) AS 'missing names'
+-- MAGIC   FROM companies
+-- MAGIC   WHERE name IS NULL
+-- MAGIC - SELECT distinct(names) FROM companies
+-- MAGIC - CREATE OR REPLACE TABLE toys_dedup AS
+-- MAGIC   SELECT distinct(*)
+-- MAGIC   FROM toys_dup
 
 -- COMMAND ----------
 

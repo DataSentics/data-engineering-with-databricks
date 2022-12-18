@@ -124,7 +124,7 @@ FROM users_dirty
 
 -- COMMAND ----------
 
-SELECT count(DISTINCT(user_first_touch_timestamp))
+SELECT count(DISTINCT(user_first_touch_timestamp)) AS count_distinct_timestamp
 FROM users_dirty
 
 -- COMMAND ----------
@@ -244,6 +244,10 @@ WHERE user_id IS NOT NULL
 GROUP BY user_id, user_first_touch_timestamp;
 
 SELECT count(*) FROM deduped_users
+
+-- COMMAND ----------
+
+SELECT * FROM deduped_users
 
 -- COMMAND ----------
 

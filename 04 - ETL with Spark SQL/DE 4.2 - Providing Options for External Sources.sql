@@ -96,6 +96,10 @@ SELECT * FROM csv.`${da.paths.datasets}/ecommerce/raw/sales-csv`
 
 -- COMMAND ----------
 
+DROP TABLE sales_csv
+
+-- COMMAND ----------
+
 CREATE TABLE sales_csv
   (order_id LONG, email STRING, transactions_timestamp LONG, total_item_quantity INTEGER, purchase_revenue_in_usd DOUBLE, unique_items INTEGER, items STRING)
 USING CSV
@@ -231,7 +235,7 @@ SELECT * FROM testing_csv3
 -- MAGIC       .table("sales_csv")
 -- MAGIC       .write.mode("append")
 -- MAGIC       .format("csv")
--- MAGIC       .save("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv/sales_csv"))
+-- MAGIC       .save("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/sales-csv"))
 
 -- COMMAND ----------
 

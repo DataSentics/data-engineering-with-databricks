@@ -86,10 +86,14 @@
 
 -- TODO
 CREATE OR REPLACE VIEW events_pivot
-<FILL_IN>
+AS SELECT * FROM (
+SELECT user_id as user, event_name
+FROM EVENTS)
+PIVOT (count(*) FOR event_name IN
 ("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
 "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
-"cc_info", "foam", "reviews", "original", "delivery", "premium")
+"cc_info", "foam", "reviews", "original", "delivery", "premium"))
+
 
 -- COMMAND ----------
 
@@ -120,6 +124,10 @@ CREATE OR REPLACE VIEW events_pivot
 -- MAGIC %python
 -- MAGIC event_columns = ['user', 'cart', 'pillows', 'login', 'main', 'careers', 'guest', 'faq', 'down', 'warranty', 'finalize', 'register', 'shipping_info', 'checkout', 'mattresses', 'add_item', 'press', 'email_coupon', 'cc_info', 'foam', 'reviews', 'original', 'delivery', 'premium']
 -- MAGIC check_table_results("events_pivot", event_columns, 204586)
+
+-- COMMAND ----------
+
+SELECT * FROM events_pivot
 
 -- COMMAND ----------
 
@@ -159,7 +167,9 @@ CREATE OR REPLACE VIEW events_pivot
 
 -- TODO
 CREATE OR REPLACE VIEW clickpaths AS
-<FILL_IN>
+SELECT * FROM events_pivot
+JOIN transactions
+ON events_pivot.user = transactions.user_id
 
 -- COMMAND ----------
 
@@ -198,9 +208,10 @@ CREATE OR REPLACE VIEW clickpaths AS
 
 -- TODO
 CREATE OR REPLACE TABLE sales_product_flags AS
-<FILL_IN>
-EXISTS <FILL_IN>.item_name LIKE "%Mattress"
-EXISTS <FILL_IN>.item_name LIKE "%Pillow"
+SELECT items,
+EXISTS (items, i -> i.item_name LIKE "%Mattress") AS mattress,
+EXISTS (items, i -> i.item_name LIKE "%Pillow") AS pillow
+FROM sales
 
 -- COMMAND ----------
 
@@ -216,6 +227,10 @@ EXISTS <FILL_IN>.item_name LIKE "%Pillow"
 -- MAGIC check_table_results("sales_product_flags", ['items', 'mattress', 'pillow'], 10539)
 -- MAGIC product_counts = spark.sql("SELECT sum(CAST(mattress AS INT)) num_mattress, sum(CAST(pillow AS INT)) num_pillow FROM sales_product_flags").first().asDict()
 -- MAGIC assert product_counts == {'num_mattress': 10015, 'num_pillow': 1386}, "There should be 10015 rows where mattress is true, and 1386 where pillow is true"
+
+-- COMMAND ----------
+
+SELECT * FROM sales_product_flags
 
 -- COMMAND ----------
 
