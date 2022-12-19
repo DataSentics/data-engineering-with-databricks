@@ -82,7 +82,7 @@ FROM events_strings
 
 SELECT value 
 FROM events_strings 
-WHERE value:event_name = "finalize" 
+WHERE value:event_name = "finalize"
 ORDER BY key
 LIMIT 1
 
@@ -389,7 +389,8 @@ SELECT
   TRANSFORM (
     king_items,
     k -> CAST(k.item_revenue_in_usd * 100 AS INT)
-  ) AS item_revenues
+  ) AS item_revenues,
+  size(king_items) as size
 FROM king_size_sales;
 
 SELECT * FROM king_item_revenues

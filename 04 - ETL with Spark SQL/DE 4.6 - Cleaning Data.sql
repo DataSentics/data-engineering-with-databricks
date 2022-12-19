@@ -247,6 +247,10 @@ SELECT count(*) FROM deduped_users
 
 -- COMMAND ----------
 
+select * from deduped_users
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC  
@@ -263,6 +267,12 @@ SELECT max(row_count) <= 1 no_duplicate_ids FROM (
   SELECT user_id, count(*) AS row_count
   FROM deduped_users
   GROUP BY user_id)
+
+-- COMMAND ----------
+
+SELECT user_id, count(*) AS row_count
+  FROM deduped_users
+  GROUP BY user_id
 
 -- COMMAND ----------
 

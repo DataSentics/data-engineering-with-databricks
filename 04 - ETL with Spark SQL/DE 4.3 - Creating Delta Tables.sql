@@ -150,7 +150,7 @@ SELECT * FROM purchases_vw
 -- MAGIC 
 -- MAGIC The code below demonstrates creating a new table while:
 -- MAGIC 1. Specifying column names and types
--- MAGIC 1. Adding a <a href="https://docs.databricks.com/delta/delta-batch.html#deltausegeneratedcolumns" target="_blank">generated column</a> to calculate the date
+-- MAGIC 1. Adding a <a href="https://docs.databricks.com/delta/generated-columns.html" target="_blank">generated column</a> to calculate the date
 -- MAGIC 1. Providing a descriptive column comment for the generated column
 
 -- COMMAND ----------

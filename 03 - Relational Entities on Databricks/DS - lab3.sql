@@ -54,3 +54,43 @@
 -- MAGIC 4. A normal view; is visible to everyone who can access the database
 -- MAGIC 5. `SHOW TABLES` will also display the views; there is a column called isTemporary, true/false
 -- MAGIC 6. A view is the result of a query; running the view re-runs the query on the table; views can be used as flexible tools to query existing tables (which are not that flexible); is view is not *data*, but rather just the query code to be run + the result of the latest run; the view can aggregate and join data from multiple tables
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC display(dbutils.fs)
+-- MAGIC dbutils.fs.mkdirs('/dbacademy/testhh')
+
+-- COMMAND ----------
+
+CREATE DATABASE if not exists testdb LOCATION '/dbacademy/testhh';
+use testdb;
+CREATE TABLE IF NOT EXISTS testtable (id double, name string) ;
+INSERT into testtable
+VALUES (1, 'John'), (2, 'Bon'), (3, 'Jovi');
+
+-- COMMAND ----------
+
+describe database extended testdb
+
+-- COMMAND ----------
+
+describe extended testtable
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC display(dbutils.fs.ls('/dbacademy/testhh/testtable/'))
+
+-- COMMAND ----------
+
+DROp DATABASE testdb CASCADE
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC dbutils.fs.rm('/dbacademy/testhh/', recurse=True)
+
+-- COMMAND ----------
+
+-- MAGIC %fs ls '/dbacademy/'

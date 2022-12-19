@@ -69,7 +69,14 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/events-kafka/
+CREATE TABLE events_json
+(key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY)
+using JSON
+OPTIONS (path = '${da.paths.datasets}/ecommerce/raw/events-kafka/')
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED events_json
 
 -- COMMAND ----------
 
@@ -100,7 +107,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE OR REPLACE TABLE events_raw
+(key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY)
 
 -- COMMAND ----------
 
@@ -129,7 +137,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+INSERT OVERWRITE events_raw SELECT * FROM events_json;
 
 -- COMMAND ----------
 
@@ -141,7 +149,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+DESCRIBE HISTORY events_raw
 
 -- COMMAND ----------
 
@@ -170,7 +178,12 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup AS
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`
+
+-- COMMAND ----------
+
+describe extended item_lookup
 
 -- COMMAND ----------
 
