@@ -8,4 +8,6 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - It's efficient and quick, just adding data to the table instead of deleting. There is an option for overwriting the whole table as well, however most efficient is appending the data.
+-- MAGIC - Data source, source format, table name and checkpoint directory.
+-- MAGIC - If a failure occurs, the streaming engine attempts to restart and/or reprocess the data.

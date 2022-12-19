@@ -165,6 +165,7 @@ for s in spark.streams.active:
     print("Stopping " + s.id)
     s.stop()
     s.awaitTermination()
+    print('Stream is stopped')
 
 # COMMAND ----------
 
@@ -216,10 +217,10 @@ for s in spark.streams.active:
 
 # COMMAND ----------
 
-# %sql
-# SELECT * 
-# FROM streaming_tmp_vw
-# ORDER BY time
+# MAGIC %sql
+# MAGIC SELECT * 
+# MAGIC FROM streaming_tmp_vw
+# MAGIC ORDER BY time
 
 # COMMAND ----------
 
