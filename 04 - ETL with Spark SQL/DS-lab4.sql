@@ -99,7 +99,21 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC - We can explode the column and use the syntax products.prices to reach the specific column within the array.
+-- MAGIC - When we need to access data from an array.
+-- MAGIC - Returns an array consisting of all the unique values within a group.
+-- MAGIC - Transforms an array of arrays into a single array.
+-- MAGIC - Selects only the distinct values from an array.
+-- MAGIC - Types of join:
+-- MAGIC   - INNER - Returns the rows that have matching values in both table references.
+-- MAGIC   - LEFT - Returns all values from the left table reference and the matched values from the right table reference, or appends NULL if there is no match.
+-- MAGIC   - RIGHT - Returns all values from the right table reference and the matched values from the left table reference, or appends NULL if there is no match.
+-- MAGIC   - OUTER - Returns all values from both relations, appending NULL values on the side that does not have a match.
+-- MAGIC - A higher-order function takes an array, implements how the array is processed, and what the result of the computation will be. It delegates to a lambda function how to process each item in the array.
+-- MAGIC   - FILTER - Filters the array in expr using the function func.
+-- MAGIC   - EXISTS - Returns true if func is true for any element in expr or query returns at least one row.
+-- MAGIC   - TRANSFORM - Transforms elements in an array in expr using the function func.
+-- MAGIC   - REDUCE - Aggregates elements in an array using a custom aggregator.
 
 -- COMMAND ----------
 
@@ -107,3 +121,14 @@
 -- MAGIC #SQL UDFs
 -- MAGIC - Write command for creating SQL UDF named **add_five** which adds 5 to a column and returns integer.
 -- MAGIC - What is the usage of case/when construct?
+
+-- COMMAND ----------
+
+CREATE OR REPLACE FUNCTION add_five(number INT)
+RETURNS INT
+RETURN number + 5
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC - CASE/WHEN allows the evaluation of multiple conditional statements with alternative outcomes based on table contents.
