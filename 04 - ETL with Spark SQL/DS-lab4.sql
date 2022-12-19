@@ -10,7 +10,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * json
+-- MAGIC * csv
+-- MAGIC * `select * from json.'json_file_path'`
+-- MAGIC * yes, should schema match
 
 -- COMMAND ----------
 
@@ -22,7 +25,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * needs refresh because the Spark doesn't know the cache has changed
 
 -- COMMAND ----------
 
@@ -38,7 +41,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * CTAS stands for Create Table As and it creates tables from queries. Those tables take the schema from the query.
+-- MAGIC * CTAS do not support schemas. They take the schemas from the query or the schema describing files (json, parquet)
+-- MAGIC * `CREATE TABLE companies AS SELECT * FROM parquet.'/files/raw/companies.csv'`
+-- MAGIC * a generated column is creatd with a CTAS and it is created from data in the query (transformation, cast)
+-- MAGIC * Dbx supports two types of constraints: non null and check. A table constraint makes sure that no incorrect data is inserted in the table.
+-- MAGIC * Databricks offers the DEEP CLONE and the SHALLOW CLONE options. The later does not bring the data with it, but just the metadata
 
 -- COMMAND ----------
 
@@ -51,7 +59,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC * the more efficient approach is to overwrite the data in the table using the CREATE OR REPLACE command. This way the data from the table will still be available as one of the vesions stored
+-- MAGIC * CRAS stands for CREATE OR REPLACE TABLE AS
+-- MAGIC * `CREATE TABLE name_of_table IF NOT EXISTS`
 
 -- COMMAND ----------
 
@@ -64,7 +74,47 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC * `SELECT count_if(name is NULL) as missing_names FROM companies;`
+-- MAGIC * `SELECT DISTINCT(name) FROM companies`
+-- MAGIC * `CREATE TABLE toys_dedup AS SELECT DISTINCT * FROM toys_dup`
+-- MAGIC * ... my practice exercises below:
+
+-- COMMAND ----------
+
+Create or replace table exercise(id bigint , name string, price double)
+
+-- COMMAND ----------
+
+insert into exercise values
+(1, 'one', null),
+(2, 'two', 5.5),
+(3, null , 6.7),
+(4, null, null),
+(7, 'seven', 8.8),
+(1, 'one', null),
+(2, 'two', 5.5),
+(1, 'one', 5.5),
+(7, 'seven', 8.8),
+(7, 'seven', 8.8),
+(7, 'seven', 8.8)
+
+
+-- COMMAND ----------
+
+select * from exercise
+
+-- COMMAND ----------
+
+select count_if(price is not null) as known_prices from exercise;
+
+-- COMMAND ----------
+
+select count_if(price is null) as unknown_prices from exercise;
+
+-- COMMAND ----------
+
+create or replace table dedup2 as select distinct * from exercise;
+select * from dedup2
 
 -- COMMAND ----------
 
@@ -83,7 +133,21 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC * column:prices
+-- MAGIC * when you want to create a row for each element of an array in a column
+-- MAGIC * collect_set function is used to create an array column by merging rows
+-- MAGIC * flatten function is used to create a single array from an array of arrays
+-- MAGIC * array_distinct returns distinct values from the array after removing duplicates
+-- MAGIC * INNER JOIN merges horizontally two tables keeping only the common values
+-- MAGIC    - LEFT JOIN merges horizontally two tables keeping the common values and the ones in the left table (nulls, for the corresponding colums in the right table)
+-- MAGIC    _ RIGTH JOIN merges horizontally two tables keeping the common values and the ones in the rigth table (nulls, for the corresponding colums in the left table)
+-- MAGIC    _ FULL JOIN merges horizontally two tables keeping the common values, the values notmatched in the left table, and the values not matched in the rigth table
+-- MAGIC * The UNION merges two tables vertically if the number of colums and its type of data matches and returns the rows that are found in either relation
+-- MAGIC * the INTERSECT returns the rows that are found in both relations
+-- MAGIC * FILTER: Returns a new array that contains only elements for which the function returned True
+-- MAGIC * EXIST: Flags if a condition is true for one or more elements in an array
+-- MAGIC * TRANSFORM: transforms each of the elements in an array using a lambda function
+-- MAGIC * REDUCE: reduces the elements of an array to a single value using two lambda functions by merging two elements in a buffer and applying the second function to the final buffer.
 
 -- COMMAND ----------
 
