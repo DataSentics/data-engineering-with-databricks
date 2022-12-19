@@ -85,6 +85,7 @@ db_name = f"dbacademy_{clean_username}_{course}_5_3l"
 working_dir = f"dbfs:/user/{username}/dbacademy/{course}/5.3l"
 
 print(f"username:    {username}")
+print(f"clean username:{clean_username}")
 print(f"db_name:     {db_name}")
 print(f"working_dir: {working_dir}")
 
@@ -246,15 +247,23 @@ display(results)
 # COMMAND ----------
 
 # TODO
-def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
-    query = <FILL-IN>
+def preview_values(state=None, render_results=False):
+    query = f"""SELECT id, value
+    FROM demo_table
+    """
 
     if state is not None:
-        <FILL-IN>
+        query = query + f"WHERE STATE = '{state}'"
 
-    if render_results
-        <FILL-IN>
-
+    if render_results:
+        display(spark.sql(query))
+        result=None
+    else:
+        print('Running SQL...')
+#         print(query)
+        result = spark.sql(query)
+    return result
+    
 
 # COMMAND ----------
 
