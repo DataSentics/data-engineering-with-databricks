@@ -165,6 +165,11 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT * FROM recordings_bronze_temp
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
@@ -233,7 +238,7 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT COUNT(*) FROM recordings_enriched
+# MAGIC SELECT * FROM recordings_enriched
 
 # COMMAND ----------
 
