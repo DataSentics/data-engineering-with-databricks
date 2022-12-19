@@ -162,7 +162,7 @@ block_until_stream_is_ready(query)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC DESCRIBE TABLE target_table
+# MAGIC DESCRIBE EXTENDED target_table
 
 # COMMAND ----------
 

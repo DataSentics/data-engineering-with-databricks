@@ -9,3 +9,21 @@
 
 # MAGIC %md
 # MAGIC **Your Answers**
+
+# COMMAND ----------
+
+my_var = "Hello"
+print(f"{my_var} World!")
+
+# COMMAND ----------
+
+query = spark.sql("SELECT * FROM table")
+
+# COMMAND ----------
+
+print("""This
+is
+a
+multi
+line
+string""")

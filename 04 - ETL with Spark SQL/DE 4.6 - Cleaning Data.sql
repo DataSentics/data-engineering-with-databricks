@@ -57,6 +57,10 @@ SELECT * FROM users_dirty
 
 -- COMMAND ----------
 
+describe extended users_dirty
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC  
@@ -292,6 +296,13 @@ SELECT max(user_id_count) <= 1 at_most_one_id FROM (
 -- MAGIC - Correctly scales and casts the **`user_first_touch_timestamp`** to a valid timestamp
 -- MAGIC - Extracts the calendar data and clock time for this timestamp in human readable format
 -- MAGIC - Uses **`regexp_extract`** to extract the domains from the email column using regex
+
+-- COMMAND ----------
+
+select
+  *
+from
+  deduped_users
 
 -- COMMAND ----------
 

@@ -69,7 +69,25 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/events-kafka/
+create table if not exists events_json (
+  key BINARY,
+  offset LONG,
+  partition INTEGER,
+  timestamp LONG,
+  topic STRING,
+  value BINARY
+) using JSON options (
+  path = "${da.paths.datasets}/ecommerce/raw/events-kafka/"
+)
+
+-- COMMAND ----------
+
+describe extended events_json
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC display(dbutils.fs.ls("dbfs:/mnt/dbacademy-datasets/data-engineering-with-databricks/v02/ecommerce/raw/events-kafka"))
 
 -- COMMAND ----------
 
@@ -100,7 +118,18 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+create table if not exists events_raw (
+  key BINARY,
+  offset LONG,
+  partition INTEGER,
+  timestamp LONG,
+  topic STRING,
+  value BINARY
+)
+
+-- COMMAND ----------
+
+describe extended events_raw
 
 -- COMMAND ----------
 
@@ -129,7 +158,12 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+insert into
+  events_raw
+select
+  *
+from
+  events_json
 
 -- COMMAND ----------
 
@@ -141,7 +175,10 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+select
+  *
+from
+  events_raw
 
 -- COMMAND ----------
 
@@ -170,7 +207,16 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+create
+or replace table item_lookup AS
+select
+  *
+from
+  parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`
+
+-- COMMAND ----------
+
+describe extended item_lookup
 
 -- COMMAND ----------
 

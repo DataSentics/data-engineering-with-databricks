@@ -9,3 +9,9 @@
 
 -- MAGIC %md
 -- MAGIC **Your answers**
+-- MAGIC 
+-- MAGIC - its advantage is that it only ingests new data thus reducing redundancy in processing the same data over and over
+-- MAGIC 
+-- MAGIC - data_source, source_format, table_name, checkpoint_directory
+-- MAGIC 
+-- MAGIC - the stream restarts and continues to stream data from the last checkpoint

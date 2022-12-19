@@ -51,6 +51,10 @@
 
 -- COMMAND ----------
 
+select * from events_raw
+
+-- COMMAND ----------
+
 CREATE OR REPLACE TEMP VIEW events_strings AS
   SELECT string(key), string(value) 
   FROM events_raw;
@@ -103,6 +107,10 @@ SELECT * FROM parsed_events
 
 -- COMMAND ----------
 
+describe extended parsed_events
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -129,7 +137,7 @@ SELECT * FROM new_events_final
 
 -- COMMAND ----------
 
-DESCRIBE events
+DESCRIBE extended events
 
 -- COMMAND ----------
 

@@ -57,7 +57,9 @@
 -- COMMAND ----------
 
 CREATE OR REPLACE TABLE events AS
-SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/events-historical`
+SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/events-historical`;
+
+DESCRIBE EXTENDed events;
 
 -- COMMAND ----------
 
