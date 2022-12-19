@@ -245,15 +245,26 @@ display(results)
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT * FROM demo_table
+
+# COMMAND ----------
+
 # TODO
-def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
-    query = <FILL-IN>
+def preview_values(state=None, render_results=False):
+    query = "SELECT id, value FROM demo_table"
 
     if state is not None:
-        <FILL-IN>
+        assert state == state.upper() and len(state) == 2, "Please use the standard 2-letter, uppercase, state abbreviations"
+        query += f" WHERE state = '{state}'"
+    
+    query_results = spark.sql(query)
 
-    if render_results
-        <FILL-IN>
+    if render_results:
+        display(query_results)
+        return None
+    else:
+        return query_results
 
 
 # COMMAND ----------
@@ -262,6 +273,10 @@ def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
 # MAGIC 
 # MAGIC 
 # MAGIC The assert statements below can be used to check whether or not your function works as intended.
+
+# COMMAND ----------
+
+preview_values("NY", True)
 
 # COMMAND ----------
 

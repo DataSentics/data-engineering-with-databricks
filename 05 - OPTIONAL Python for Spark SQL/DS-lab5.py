@@ -7,5 +7,16 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC **Your Answers**
+my_var = "Hello"
+print(f"{my_var} World!")
+
+# COMMAND ----------
+
+query = "SELECT * FROM table"
+query_sql = spark.sql(query)
+display(query_sql)
+
+# COMMAND ----------
+
+query = """SELECT *
+FROM TABLE"""
