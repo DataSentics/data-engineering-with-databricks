@@ -206,7 +206,7 @@ query_or_make_demo_table("demo_table")
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT id, value 
+# MAGIC SELECT id, value, state 
 # MAGIC FROM demo_table
 # MAGIC WHERE state = "CA"
 
@@ -246,15 +246,24 @@ display(results)
 # COMMAND ----------
 
 # TODO
-def preview_values(state=<FILL-IN>, render_results=<FILL-IN>):
-    query = <FILL-IN>
+def preview_values(state=None, render_results=False):
+    query = "SELECT id, value, state FROM demo_table"
 
     if state is not None:
-        <FILL-IN>
+        assert state == state.upper() and len(state) == 2, "Please use the standard two letter, upper case, state abbreviations"
+        query += f" where state = '{state}'"
+    query_results = spark.sql(query)
 
-    if render_results
-        <FILL-IN>
+    if render_results:
+        display(query_results)
+        return None
+    else: 
+        return query_results
 
+
+# COMMAND ----------
+
+preview_values("NY", True)
 
 # COMMAND ----------
 
