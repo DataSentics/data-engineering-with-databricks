@@ -9,7 +9,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - Generally speaking, a database is any ordered collection of data
+-- MAGIC - create database if not exists database_name;
+-- MAGIC - describe extended database_name;
+-- MAGIC - drop database database_name;
 
 -- COMMAND ----------
 
@@ -22,7 +25,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - Managed tables are the default way to create tables if location is not specified
+-- MAGIC - create or replace table1 as select * from table2
+-- MAGIC - you specify the location, a location which is outside of the root storage location
 
 -- COMMAND ----------
 
@@ -38,4 +43,20 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - create view this_view
+-- MAGIC - create temp view temp_view
+-- MAGIC - Unlike regular views, temporary views are visible only to the session that created them and are dropped when the session ends
+-- MAGIC - Global temp views are good to share between users within a session and then they get automatically dropped once the session ends
+-- MAGIC - show tables;
+-- MAGIC - a view is exclusively a virtual table, has no files associated with it and does not occupy space
+
+-- COMMAND ----------
+
+-- create or replace table t (name string, age int);
+
+-- create or replace temp view v as select * from t;
+
+-- show tables;
+
+-- drop table t;
+-- drop view v;

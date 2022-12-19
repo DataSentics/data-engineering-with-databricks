@@ -10,7 +10,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - parquet, json
+-- MAGIC - csv
+-- MAGIC - SELECT * FROM json.`path`
+-- MAGIC - Yes
 
 -- COMMAND ----------
 
@@ -22,7 +25,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - REFRESH TABLE table_name
 
 -- COMMAND ----------
 
@@ -38,7 +41,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - CREATE TABLE table_name AS - will create delta tables
+-- MAGIC - 
+-- MAGIC - CREATE TABLE table_name AS SELECT * FROM parquet.`/files/raw/companies.csv`
+-- MAGIC - A generated column is a column computed from other columns
+-- MAGIC - CHECK and NOT NULL - enforced contraints ensure that the quality and integrity of data
+-- MAGIC - DEEP and SHALLOW - unlike deep clones, shallow clones do not copy over the data from the source
 
 -- COMMAND ----------
 
@@ -51,7 +59,9 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - INSERT OVERWRITE is faster 
+-- MAGIC - 
+-- MAGIC - CREATE OR REPLACE TABLE IF NOT EXISTS
 
 -- COMMAND ----------
 

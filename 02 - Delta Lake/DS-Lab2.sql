@@ -10,7 +10,12 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers about Delta Lake**
+-- MAGIC - Delta Lake is a storage layer that runs on top of an existing Data Lake in order to imporve its reliability, security and performance (Data Lakehouse)
+-- MAGIC - Delta Lake provides ACID transactions, Scalable Metadata and Time Travel
+-- MAGIC - ACID = Atomicity, Consistency, Isolation, Durability
+-- MAGIC     - It ensures data quality and integrity
+-- MAGIC - Delta Lake is not a Data Lake or other type of database
+-- MAGIC - It mainly utilizes/improves the Parquet file format
 
 -- COMMAND ----------
 
@@ -26,6 +31,13 @@
 -- COMMAND ----------
 
 -- Create the table here
+create or replace table filip_employees (name string, companyId int, income double);
+describe extended filip_employees;
+-- table is managed
+-- delta is the default format
+-- it is stored in the default location: dbfs:/user/hive/warehouse/employees
+-- it is stored in the database: default
+select * from filip_employees;
 
 -- COMMAND ----------
 
@@ -41,10 +53,20 @@
 -- COMMAND ----------
 
 -- INSERT 3 records in single transaction
+insert into filip_employees values
+('John', 1, 253),
+('Mike', 1, 300),
+('Eugene', 2, 400);
+-- a transaction is one or multiple operations on a database performed as a single unit of work
+-- commiting a transaction means saving the modified data permanently
+select * from filip_employees;
 
 -- COMMAND ----------
 
 -- INSERT 2 records each in a different transaction
+insert into filip_employees values ('Rick', 3, 500);
+insert into filip_employees values ('Morty', 3, 350);
+-- if the job fails midway the transaction is canceled
 
 -- COMMAND ----------
 
@@ -61,6 +83,12 @@
 -- COMMAND ----------
 
 -- Query/View your table here
+select * from filip_employees;
+-- select * from database.filip_employees
+select * from filip_employees version as of 2;
+-- Delta Lake keeps track of all the transactions performed on a table/ delta files are stored for each modification
+-- Due to ACID-Isolation it is perfectly ok if someone is reading and writing at the same time using the same table
+-- Delta Lake supports concurrent reads 
 
 -- COMMAND ----------
 
@@ -77,6 +105,15 @@
 -- COMMAND ----------
 
 -- Update your table here
+update filip_employees
+set income = income + 200
+where companyId = 1;
+
+describe history filip_employees;
+-- one transaction
+-- 
+-- 
+-- a new version has been created
 
 -- COMMAND ----------
 
@@ -92,6 +129,15 @@
 -- COMMAND ----------
 
 -- Delete your table here
+delete from filip_employees
+where companyId = 1;
+
+describe history filip_employees;
+
+-- one transaction 
+--
+-- 
+-- a new version has been created
 
 -- COMMAND ----------
 
@@ -115,6 +161,12 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Merge the above updates into company table here
+merge into filip_employees fe
+using updates u
+on fe.name = u.name
+when not matched then insert *;
+
+select * from filip_employees;
 
 -- COMMAND ----------
 
@@ -129,6 +181,10 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 -- COMMAND ----------
 
 -- Delete your table here
+drop table filip_employees;
+-- 
+-- one transaction
+-- if the job fails the transactions is reversed
 
 -- COMMAND ----------
 
@@ -137,34 +193,34 @@ CREATE OR REPLACE TEMP VIEW updates(name, companyId, income, type) AS VALUES
 
 -- COMMAND ----------
 
-CREATE TABLE students
+CREATE or replace TABLE f_students
   (id INT, name STRING, value DOUBLE);
   
-INSERT INTO students VALUES (1, "Yve", 1.0);
-INSERT INTO students VALUES (2, "Omar", 2.5);
-INSERT INTO students VALUES (3, "Elia", 3.3);
+INSERT INTO f_students VALUES (1, "Yve", 1.0);
+INSERT INTO f_students VALUES (2, "Omar", 2.5);
+INSERT INTO f_students VALUES (3, "Elia", 3.3);
 
-INSERT INTO students
+INSERT INTO f_students
 VALUES 
   (4, "Ted", 4.7),
   (5, "Tiffany", 5.5),
   (6, "Vini", 6.3);
   
-UPDATE students 
+UPDATE f_students 
 SET value = value + 1
 WHERE name LIKE "T%";
 
-DELETE FROM students 
+DELETE FROM f_students 
 WHERE value > 6;
 
-CREATE OR REPLACE TEMP VIEW updates(id, name, value, type) AS VALUES
+CREATE OR REPLACE TEMP VIEW f_updates(id, name, value, type) AS VALUES
   (2, "Omar", 15.2, "update"),
   (3, "", null, "delete"),
   (7, "Blue", 7.7, "insert"),
   (11, "Diya", 8.8, "update");
   
-MERGE INTO students b
-USING updates u
+MERGE INTO f_students b
+USING f_updates u
 ON b.id=u.id
 WHEN MATCHED AND u.type = "update"
   THEN UPDATE SET *
@@ -187,12 +243,17 @@ WHEN NOT MATCHED AND u.type = "insert"
 -- COMMAND ----------
 
 -- Write the first option to explore the students table in depth
-DESCRIBE EXTENDED students
+DESCRIBE EXTENDED f_students;
+-- describe extended, describe detail, describe history, dbutils.fs.ls()
+-- no partitions
+-- dbfs:/user/hive/warehouse/students
+-- database, owner, provider, managed or external
+-- 
 
 -- COMMAND ----------
 
 -- Write the second option to explore the students table in depth
-DESCRIBE DETAIL students
+DESCRIBE DETAIL f_students;
 
 -- COMMAND ----------
 
@@ -208,10 +269,17 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the command to see history of students table
+describe history f_students;
+-- restore f_students to version as of 1;
+-- history is retaine dthrough delta files
+-- you can to up to the creation of the table
+-- vacuum
+-- 
 
 -- COMMAND ----------
 
 -- Roll back to different vesrion in the history of stundets table
+restore f_students to version as of 1;
 
 -- COMMAND ----------
 
@@ -226,6 +294,7 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the OPTIMIZE command on the students table
+optimize f_students;
 
 -- COMMAND ----------
 
@@ -242,3 +311,5 @@ DESCRIBE DETAIL students
 -- COMMAND ----------
 
 -- Run the ZORDER command
+optimize f_students
+zorder by name;
