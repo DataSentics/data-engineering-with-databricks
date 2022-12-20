@@ -96,6 +96,11 @@ DA.validate_pipeline_config()
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Push test
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC 
 # MAGIC 
 # MAGIC ## Run a Pipeline
