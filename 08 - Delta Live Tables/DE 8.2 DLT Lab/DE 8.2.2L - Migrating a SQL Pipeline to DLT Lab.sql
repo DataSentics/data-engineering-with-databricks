@@ -34,9 +34,9 @@
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN>
-AS SELECT <FILL-IN>
-  FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn INTEGER"))
+CREATE OR REFRESH STREAMING LIVE TABLE recordings_bronze
+AS SELECT *, current_timestamp() receipt_time, input_file_name() source_file
+FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn INTEGER"))
 
 -- COMMAND ----------
 
@@ -59,9 +59,9 @@ AS SELECT <FILL-IN>
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> pii
+CREATE OR REFRESH STREAMING LIVE TABLE pii
 AS SELECT *
-  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map(<FILL-IN>))
+FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map("header", "true", "cloudFiles.inferColumnTypes", "true"))
 
 -- COMMAND ----------
 
@@ -88,14 +88,17 @@ AS SELECT *
 
 -- TODO
 CREATE OR REFRESH STREAMING LIVE TABLE recordings_enriched
-  (<FILL-IN add a constraint to drop records when heartrate ! > 0>)
-AS SELECT 
-  CAST(<FILL-IN>) device_id, 
-  <FILL-IN mrn>, 
-  <FILL-IN heartrate>, 
-  CAST(FROM_UNIXTIME(DOUBLE(time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time 
-  FROM STREAM(live.recordings_bronze)
-  <FILL-IN specify source and perform inner join with pii on mrn>
+(CONSTRAINT drop_invalid_heartrate EXPECT (heartrate > 0) ON VIOLATION DROP ROW)
+  AS SELECT 
+  CAST(a.device_id AS integer) device_id, 
+  CAST(a.mrn AS long) mrn, 
+  CAST(a.heartrate AS double) heartrate, 
+  CAST(FROM_UNIXTIME(DOUBLE(a.time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time,
+  b.name
+  FROM STREAM(live.recordings_bronze) a
+  INNER JOIN
+  STREAM(live.pii) b
+  ON a.mrn = b.mrn
 
 -- COMMAND ----------
 
@@ -116,9 +119,11 @@ AS SELECT
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> daily_patient_avg
-  COMMENT <FILL-IN insert comment here>
-AS SELECT <FILL-IN>
+CREATE OR REFRESH LIVE TABLE daily_patient_avg
+COMMENT "Avarage heartrate for patient by day"
+  AS SELECT mrn, name, mean(heartrate) avg_heartrate, to_date(time, 'yyyy-MM-dd') `date`
+  FROM LIVE.recordings_enriched
+  GROUP BY mrn, name, to_date(time, 'yyyy-MM-dd')
 
 -- COMMAND ----------
 
