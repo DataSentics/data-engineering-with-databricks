@@ -8,4 +8,6 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your answers**
+-- MAGIC - Because less data is being added or modified, it takes less time to validate the data, making the process a lot faster
+-- MAGIC - data_source, source_format, table_name, checkpoint_directory
+-- MAGIC - Due to checkpointing, it will restart from the last checkpoint

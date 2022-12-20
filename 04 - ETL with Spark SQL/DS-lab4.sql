@@ -74,7 +74,10 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC - select (count(*) - count(name)) from companies;
+-- MAGIC - select count(distinct(names)) from companies;
+-- MAGIC - create or replace table toys_dedup as select distinct(*) from toys_dup;
+-- MAGIC       
 
 -- COMMAND ----------
 
@@ -93,7 +96,17 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC **Your Answers**
+-- MAGIC - select products.prices
+-- MAGIC - When you want to make a separate row for each element of an array value
+-- MAGIC - Returns an array consisting of all unique values within the group
+-- MAGIC - Transforms an array of arrays into a single array
+-- MAGIC - Removes duplicate values from arrays
+-- MAGIC - 
+-- MAGIC -
+-- MAGIC - FILTER is used to filter an array using a lambda type function
+-- MAGIC   EXISTS returns true if the lambda function is true for any element in expr or query returns at least one row
+-- MAGIC   TRANSFORM transforms the lements in an array using a lambda function
+-- MAGIC   REDUCE aggregates elements in an array using a custom aggregator
 
 -- COMMAND ----------
 
@@ -101,3 +114,13 @@
 -- MAGIC #SQL UDFs
 -- MAGIC - Write command for creating SQL UDF named **add_five** which adds 5 to a column and returns integer.
 -- MAGIC - What is the usage of case/when construct?
+
+-- COMMAND ----------
+
+CREATE OR REPLACE FUNCTION add_five(nr int)
+RETURNS int
+RETURN nr + 5
+
+-- CASE WHEN is similar to if/else
+
+

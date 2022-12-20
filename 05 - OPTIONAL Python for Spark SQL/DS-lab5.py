@@ -8,4 +8,6 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your Answers**
+# MAGIC - print('Filip says ' + my_var)  >>>  Filip says Hello World!
+# MAGIC - spark.sql('SELECT * FROM table')
+# MAGIC - """ multiline string """

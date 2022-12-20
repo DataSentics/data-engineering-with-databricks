@@ -8,4 +8,5 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Your answers**
+# MAGIC - Bronze: raw data ingested from cloud; Silver: clean data; Gold: bussiness ready aggregated data
+# MAGIC - You cannot use Auto Loader from a data source written in complete output mode
