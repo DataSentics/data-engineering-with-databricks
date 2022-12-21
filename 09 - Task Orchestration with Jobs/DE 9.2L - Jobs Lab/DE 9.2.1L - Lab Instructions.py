@@ -54,7 +54,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-DA.print_pipeline_config()
+print_pipeline_config()
 
 # COMMAND ----------
 
@@ -86,7 +86,7 @@ DA.print_pipeline_config()
 
 # COMMAND ----------
 
-DA.validate_pipeline_config()
+validate_pipeline_config()
 
 # COMMAND ----------
 
@@ -101,7 +101,7 @@ DA.validate_pipeline_config()
 
 # COMMAND ----------
 
-DA.print_job_config()
+print_job_config()
 
 # COMMAND ----------
 
