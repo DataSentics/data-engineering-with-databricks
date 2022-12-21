@@ -9,3 +9,9 @@
 
 # MAGIC %md
 # MAGIC **Your Answers**
+# MAGIC 
+# MAGIC - It is used to provide a data warehouse-like env. to execute SQL queries, visualizations, and dashboards
+# MAGIC 
+# MAGIC - Provides enterprises a data warehouse experience.
+# MAGIC 
+# MAGIC - You use the refresh schedule option in the query view
