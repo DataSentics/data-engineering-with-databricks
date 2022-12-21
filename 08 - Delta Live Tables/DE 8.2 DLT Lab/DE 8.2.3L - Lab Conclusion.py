@@ -31,7 +31,13 @@
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM ${da.db_name}.daily_patient_avg
+# MAGIC SELECT * FROM ${da.db_name}.recording_bronze
+# MAGIC WHERE mrn = 65300842
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT * FROM ${da.db_name}.pii
 
 # COMMAND ----------
 

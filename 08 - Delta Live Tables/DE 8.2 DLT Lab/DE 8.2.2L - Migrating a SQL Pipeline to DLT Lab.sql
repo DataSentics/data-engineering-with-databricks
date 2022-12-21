@@ -34,9 +34,15 @@
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN>
-AS SELECT <FILL-IN>
-  FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn INTEGER"))
+CREATE OR REFRESH STREAMING LIVE TABLE recording_bronze
+AS SELECT *, current_timestamp() receipt_time, input_file_name() source_file
+  FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn LONG"))
+
+-- COMMAND ----------
+
+-- # %python
+-- # files = dbutils.fs.ls(f"{source}")
+-- # display(files)
 
 -- COMMAND ----------
 
@@ -59,9 +65,9 @@ AS SELECT <FILL-IN>
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> pii
+CREATE OR REFRESH STREAMING LIVE TABLE pii
 AS SELECT *
-  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map(<FILL-IN>))
+  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map('header', 'true', 'cloudFiles.inferColumnTypes', 'true'))
 
 -- COMMAND ----------
 
@@ -88,14 +94,16 @@ AS SELECT *
 
 -- TODO
 CREATE OR REFRESH STREAMING LIVE TABLE recordings_enriched
-  (<FILL-IN add a constraint to drop records when heartrate ! > 0>)
+  (CONSTRAINT positive_heartrate EXPECT (heartrate > 0) ON VIOLATION DROP ROW)
 AS SELECT 
-  CAST(<FILL-IN>) device_id, 
-  <FILL-IN mrn>, 
-  <FILL-IN heartrate>, 
-  CAST(FROM_UNIXTIME(DOUBLE(time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time 
-  FROM STREAM(live.recordings_bronze)
-  <FILL-IN specify source and perform inner join with pii on mrn>
+  CAST(a.device_id AS INT) device_id, 
+  CAST(a.mrn AS BIGINT) mrn, 
+  CAST(a.heartrate AS DOUBLE) heartrate, 
+  CAST(from_unixtime(a.time, 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time,
+  b.name
+  FROM STREAM(live.recordings_bronze) a
+  INNER JOIN STREAM(live.pii) b
+  ON a.mrn = b.mrn
 
 -- COMMAND ----------
 
@@ -116,9 +124,13 @@ AS SELECT
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> daily_patient_avg
-  COMMENT <FILL-IN insert comment here>
-AS SELECT <FILL-IN>
+CREATE OR REFRESH STREAMING LIVE TABLE daily_patient_avg
+  COMMENT 'Daily mean heartrates by patient'
+AS SELECT 
+  mrn, name, mean(heartrate) avg_heartrate, DATE(time) `date`
+FROM live.recordings_enriched
+GROUP BY
+  mrn, name, DATE(time)
 
 -- COMMAND ----------
 
