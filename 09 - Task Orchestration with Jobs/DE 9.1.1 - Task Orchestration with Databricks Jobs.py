@@ -42,7 +42,7 @@
 
 # COMMAND ----------
 
-print_pipeline_config()    
+print_pipeline_config()
 
 # COMMAND ----------
 

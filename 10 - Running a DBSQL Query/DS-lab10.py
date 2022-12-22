@@ -9,3 +9,7 @@
 
 # MAGIC %md
 # MAGIC **Your Answers**
+# MAGIC 
+# MAGIC 1. Running queries, BI, dahsboards on the DB lakehouse
+# MAGIC 2. SQL Warehouse is a compute resource which allows to run SQL commands on data; the user only runs the commands, the reseources ara managed by the platform
+# MAGIC 3. Under 'Queries', select the query and then in the top-right corner there is a "schedule" button; probbaly the same needs to be done for the Dashboard which uses the query...?
