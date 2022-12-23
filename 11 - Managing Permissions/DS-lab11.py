@@ -13,3 +13,10 @@
 # MAGIC %md
 # MAGIC 
 # MAGIC **Your Answers**
+# MAGIC - Is a governance solution on the lakehouse. It simplifies security and governance of data by providing a central place to administer and audit data access.
+# MAGIC 
+# MAGIC - catalog.schema(db).table
+# MAGIC 
+# MAGIC - GRANT MODIFY ON TABLE cars to `john.doe@company.com`
+# MAGIC - GRANT SELECT ON TABLE cars to `john.doe@company.com`
+# MAGIC - GRANT ALL PRIVILEGES ON TABLE cars to `john.doe@company.com`
